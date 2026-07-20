@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>apex-vita-ui.skill — Oracle APEX Universal Theme 42 design tokens for AI</title>
+<meta name="description" content="A drop-in design-token reference for Oracle APEX Universal Theme 42 (Vita), built so any AI can generate APEX-accurate HTML/CSS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens/vita-light.css" id="base-css">
+<link rel="stylesheet" href="tokens/vita-emerald.css" id="delta-css">
+<style>
+  :root {
+    --bg: #F7F8F6;
+    --bg-elevated: #FFFFFF;
+    --bg-sunken: #F0F2EF;
+    --text: #10151A;
+    --text-soft: #545F58;
+    --line: rgba(16,20,24,.10);
+    --accent: #0E9F6E;
+    --accent-soft: #E5F6EF;
+    --code-bg: #0F1512;
+    --code-text: #D9DDDA;
+    --shadow: 0 1.5rem 3rem -1.5rem rgba(16,20,24,.35);
+    --mono: 'JetBrains Mono', monospace;
+    --display: 'Space Grotesk', sans-serif;
+    --body-font: 'Inter', -apple-system, sans-serif;
+    color-scheme: light;
+  }
+  html[data-theme="dark"] {
+    --bg: #0A0D0B;
+    --bg-elevated: #121712;
+    --bg-sunken: #171D19;
+    --text: #ECEFEC;
+    --text-soft: #9BA39D;
+    --line: rgba(255,255,255,.10);
+    --accent: #1FC98A;
+    --accent-soft: rgba(31,201,138,.14);
+    --code-bg: #06090A;
+    --code-text: #C6CBC7;
+    --shadow: 0 1.5rem 3rem -1.5rem rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; font-family: var(--body-font); background: var(--bg); color: var(--text);
+    -webkit-font-smoothing: antialiased; transition: background .3s ease, color .3s ease;
+  }
+  a { color: inherit; }
+  img, svg { display:block; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
+  ::selection { background: var(--accent); color:#fff; }
+
+  .reveal { opacity:0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in-view { opacity:1; transform: translateY(0); }
+  @keyframes floatIn { from { opacity:0; transform: translateY(14px);} to {opacity:1; transform:translateY(0);} }
+  .hero .anim-1 { animation: floatIn .6s ease both; }
+  .hero .anim-2 { animation: floatIn .6s .08s ease both; }
+  .hero .anim-3 { animation: floatIn .6s .16s ease both; }
+  .hero .anim-4 { animation: floatIn .6s .24s ease both; }
+  .hero .anim-5 { animation: floatIn .7s .34s ease both; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .hero [class^="anim-"] { animation:none !important; transition:none !important; opacity:1 !important; transform:none !important; }
+  }
+
+  .site-nav { position: sticky; top:0; z-index:60; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: saturate(180%) blur(10px); border-bottom:1px solid var(--line); }
+  .site-nav .wrap { display:flex; align-items:center; justify-content:space-between; height:3.75rem; gap:1rem; }
+  .brand { display:flex; align-items:center; gap:.6rem; font-family: var(--display); font-weight:700; font-size:1.05rem; text-decoration:none; flex-shrink:0; }
+  .brand .dot { width:.6rem; height:.6rem; border-radius:2px; background: var(--accent); display:inline-block; transform: rotate(45deg); }
+  .site-nav nav { display:flex; gap:1.6rem; font-size:.875rem; font-weight:500; }
+  .site-nav nav a { text-decoration:none; color: var(--text-soft); white-space:nowrap; }
+  .site-nav nav a:hover { color: var(--text); }
+  .nav-right { display:flex; align-items:center; gap:.6rem; }
+  .icon-btn { width:2.25rem; height:2.25rem; border-radius:.5rem; border:1px solid var(--line); background: var(--bg-elevated); display:flex; align-items:center; justify-content:center; cursor:pointer; color: var(--text); flex-shrink:0; }
+  .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .icon-btn svg { width:1.05rem; height:1.05rem; }
+  .btn-star { display:inline-flex; align-items:center; gap:.4rem; background: var(--text); color: var(--bg); text-decoration:none; padding:.5rem .9rem; border-radius:.375rem; font-size:.8125rem; font-weight:600; white-space:nowrap; }
+  .btn-star:hover { opacity:.85; }
+  @media (max-width: 880px) { .site-nav nav { display:none; } }
+
+  .hero { padding: 4rem 0 2.5rem; }
+  .eyebrow { font-family: var(--mono); font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; color: var(--accent); background: var(--accent-soft); display:inline-block; padding:.3rem .6rem; border-radius:.25rem; margin-bottom:1.1rem; }
+  .hero h1 { font-family: var(--display); font-size: clamp(2rem,4.4vw,3.3rem); line-height:1.08; margin:0 0 1.1rem; letter-spacing:-.01em; max-width:21ch; }
+  .hero h1 em { font-style:normal; color: var(--accent); }
+  .hero p.lede { font-size:1.1rem; color: var(--text-soft); max-width:48ch; line-height:1.6; margin:0 0 1.6rem; }
+  .hero-ctas { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:1.75rem; }
+  .btn-primary, .btn-secondary { text-decoration:none; font-size:.875rem; font-weight:600; padding:.7rem 1.1rem; border-radius:.375rem; display:inline-flex; align-items:center; gap:.5rem; transition:transform .15s ease; }
+  .btn-primary { background: var(--accent); color:#fff; }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-secondary { background: var(--bg-elevated); color: var(--text); border:1px solid var(--line); }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  code.inline { font-family: var(--mono); background: var(--code-bg); color: var(--code-text); padding:.15rem .45rem; border-radius:.25rem; font-size:.85em; }
+
+  .clone-box { font-family: var(--mono); font-size:.8125rem; background: var(--code-bg); color: var(--code-text); padding:.9rem 1.1rem; border-radius:.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; max-width:560px; }
+  .clone-box button { font-family: var(--body-font); font-size:.75rem; background:rgba(255,255,255,.08); color: var(--code-text); border:none; padding:.4rem .7rem; border-radius:.3rem; cursor:pointer; flex-shrink:0; display:flex; align-items:center; gap:.3rem; }
+  .clone-box button:hover { background:rgba(255,255,255,.16); }
+
+  .demo-shell { margin-top:2rem; border-radius:.75rem; overflow:hidden; box-shadow: var(--shadow); }
+  .demo-toolbar { background:#fff; border-bottom:1px solid rgba(16,20,24,.08); padding:.6rem 1rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+  .demo-toolbar .label { font-family: var(--mono); font-size:.75rem; color:#545F58; }
+  .style-switch { display:flex; gap:.35rem; flex-wrap:wrap; }
+  .style-switch button { font-size:.75rem; font-weight:600; padding:.4rem .7rem; border-radius:.3rem; border:1px solid rgba(16,20,24,.12); background:#fff; cursor:pointer; color:#545F58; transition:.15s; }
+  .style-switch button.active { background:#10151A; color:#fff; border-color:#10151A; }
+
+  .app-header { height: var(--ut-header-height); background: var(--ut-header-background-color); color: var(--ut-header-text-color); display:flex; align-items:center; justify-content:space-between; padding:0 1rem; font-size:.8125rem; font-weight:600; transition: background .3s; }
+  .app-layout { display:flex; min-height:340px; background: var(--ut-body-background-color); }
+  .app-nav { width:11rem; background: var(--ut-body-nav-background-color); color: var(--ut-body-nav-text-color); padding:.75rem 0; font-size:.75rem; flex-shrink:0; }
+  .app-nav div { padding:.5rem .9rem; }
+  .app-nav div.active { background: var(--a-treeview-node-selected-background-color); color: var(--a-treeview-node-selected-text-color); }
+  .app-main { flex:1; padding:1.25rem; color: var(--ut-body-text-color); }
+  .app-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap:.85rem; margin-bottom:1rem; }
+
+  .t-Region { background: var(--ut-region-background-color); border:1px solid var(--ut-region-border-color); border-radius: var(--ut-region-border-radius); box-shadow: var(--ut-region-box-shadow); }
+  .t-Region-header { background: var(--ut-region-header-background-color); border-bottom:1px solid var(--ut-region-header-border-color); padding:.6rem .8rem; font-size:.8125rem; font-weight:600; display:flex; align-items:center; gap:.5rem; }
+  .t-Region-body { padding:.8rem; font-size:.8125rem; }
+  .t-Button { display:inline-flex; align-items:center; background: var(--a-button-background-color); color: var(--a-button-text-color); border:1px solid var(--a-button-border-color); border-radius: var(--a-button-border-radius); padding:.4rem .7rem; font-size:.75rem; cursor:pointer; gap:.3rem; }
+  .t-Button--hot { background: var(--ut-palette-primary); color: var(--ut-palette-primary-contrast); border-color:transparent; }
+  .t-Button--simple { background:transparent; border-color: var(--ut-palette-primary); color: var(--ut-palette-primary); }
+  .t-Button--danger { background: var(--ut-palette-danger); color: var(--ut-palette-danger-contrast); border-color:transparent; }
+  .t-Badge { font-size:.6875rem; padding:.1rem .45rem; border-radius: var(--ut-component-badge-border-radius); background: var(--ut-component-badge-background-color); display:inline-block; }
+  .t-Alert { display:flex; gap:.6rem; padding:.65rem .85rem; border-radius: var(--ut-component-border-radius); font-size:.8125rem; }
+  .t-Alert--success { background: var(--ut-palette-success-shade); border-left:3px solid var(--ut-palette-success); }
+  .t-Alert--danger { background: var(--ut-palette-danger-shade); border-left:3px solid var(--ut-palette-danger); }
+  .t-Breadcrumb { display:flex; gap:.4rem; font-size:.75rem; color: var(--ut-breadcrumb-item-text-color); }
+  .t-Breadcrumb b { color: var(--ut-body-title-text-color); font-weight:600; }
+  .t-Tabs { display:flex; gap:1.1rem; border-bottom:1px solid var(--ut-component-border-color); font-size:.8125rem; }
+  .t-Tabs span { padding:.5rem 0; cursor:pointer; color: var(--ut-tabs-item-text-color); }
+  .t-Tabs span.is-active { color: var(--ut-tabs-item-active-text-color); font-weight: var(--ut-tabs-item-active-font-weight); border-bottom:2px solid var(--ut-palette-primary); }
+  .metric-card { background: var(--ut-region-background-color); border:1px solid var(--ut-region-border-color); border-radius: var(--ut-region-border-radius); padding:.9rem 1rem; }
+  .metric-card .m-label { font-size:.7rem; color: var(--ut-component-text-muted-color); text-transform:uppercase; letter-spacing:.04em; }
+  .metric-card .m-value { font-family: var(--display); font-size:1.6rem; font-weight:700; margin:.15rem 0; }
+  .metric-card .m-trend { font-size:.75rem; color: var(--ut-palette-success); }
+  .avatar-circle { width:2rem; height:2rem; border-radius:50%; background: var(--ut-palette-primary); color: var(--ut-palette-primary-contrast); display:flex; align-items:center; justify-content:center; font-size:.7rem; font-weight:700; flex-shrink:0; }
+  .timeline { border-left:2px solid var(--ut-component-border-color); padding-left:.9rem; display:flex; flex-direction:column; gap:.75rem; }
+  .timeline .t-item { position:relative; font-size:.8125rem; }
+  .timeline .t-item::before { content:""; position:absolute; left:-1.19rem; top:.2rem; width:.55rem; height:.55rem; border-radius:50%; background: var(--ut-palette-primary); }
+  .timeline .t-date { font-size:.6875rem; color: var(--ut-component-text-muted-color); }
+
+  section { padding: 3.5rem 0; border-top:1px solid var(--line); }
+  .section-head { max-width: 50ch; margin-bottom:2rem; }
+  .section-head .eyebrow { margin-bottom:.75rem; }
+  h2 { font-family: var(--display); font-size: clamp(1.5rem,2.6vw,2rem); margin:0 0 .6rem; letter-spacing:-.01em; }
+  .section-head p { color: var(--text-soft); line-height:1.6; margin:0; }
+
+  .accordion { display:flex; flex-direction:column; gap:.6rem; }
+  .acc-item { border:1px solid var(--line); border-radius:.6rem; background: var(--bg-elevated); overflow:hidden; }
+  .acc-head { width:100%; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 1.15rem; background:none; border:none; cursor:pointer; text-align:left; color: var(--text); font-family: var(--body-font); }
+  .acc-head .left { display:flex; align-items:center; gap:.75rem; }
+  .acc-head .cat-icon { width:2.1rem; height:2.1rem; border-radius:.5rem; background: var(--accent-soft); color: var(--accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .acc-head .cat-icon svg { width:1.15rem; height:1.15rem; }
+  .acc-head .title { font-family: var(--display); font-weight:600; font-size:1rem; }
+  .acc-head .count { font-family: var(--mono); font-size:.7rem; color: var(--text-soft); background: var(--bg-sunken); padding:.15rem .5rem; border-radius:1rem; margin-left:.4rem; }
+  .acc-head .chev { width:1rem; height:1rem; transition: transform .3s ease; color: var(--text-soft); flex-shrink:0; }
+  .acc-item.open .chev { transform: rotate(180deg); }
+  .acc-panel { display:grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease; }
+  .acc-item.open .acc-panel { grid-template-rows: 1fr; }
+  .acc-panel-inner { overflow:hidden; min-height:0; }
+  .acc-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(230px,1fr)); gap:.75rem; padding: 0 1.15rem 1.15rem; }
+  .feat-chip { border:1px solid var(--line); border-radius:.5rem; padding:.8rem .9rem; background: var(--bg-sunken); }
+  .feat-chip .fc-name { font-size:.8125rem; font-weight:600; margin-bottom:.25rem; display:flex; align-items:center; gap:.4rem; }
+  .feat-chip .fc-name::before { content:""; width:.4rem; height:.4rem; border-radius:50%; background: var(--accent); display:inline-block; flex-shrink:0; }
+  .feat-chip .fc-desc { font-size:.75rem; color: var(--text-soft); line-height:1.45; }
+
+  .spotlight-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap:1rem; }
+  .spotlight-card { background: var(--bg-elevated); border:1px solid var(--line); border-radius:.6rem; padding:1rem; }
+  .spotlight-card .sp-label { font-family: var(--mono); font-size:.7rem; color: var(--accent); text-transform:uppercase; letter-spacing:.05em; margin-bottom:.6rem; }
+
+  .prompt-card { background: var(--bg-elevated); border:1px solid var(--line); border-radius:.6rem; overflow:hidden; margin-bottom:1.25rem; }
+  .prompt-card .pc-head { padding:1rem 1.15rem; border-bottom:1px solid var(--line); }
+  .prompt-card .pc-head .pc-title { font-family: var(--display); font-weight:600; font-size:.95rem; margin-bottom:.35rem; }
+  .prompt-card .pc-head .pc-prompt { font-family: var(--mono); font-size:.8125rem; color: var(--text-soft); line-height:1.6; }
+  .pc-tabs { display:flex; gap:.4rem; padding:.75rem 1.15rem 0; }
+  .pc-tabs button { font-size:.75rem; font-weight:600; padding:.45rem .8rem; border-radius:.4rem .4rem 0 0; border:1px solid var(--line); border-bottom:none; background: var(--bg-sunken); color: var(--text-soft); cursor:pointer; }
+  .pc-tabs button.active { background: var(--bg-elevated); color: var(--accent); }
+  .pc-body { border-top:1px solid var(--line); }
+  .pc-pane { display:none; }
+  .pc-pane.active { display:block; }
+  .pc-view { padding:1.15rem; }
+  .code-block { position:relative; background: var(--code-bg); }
+  .code-block .copy-btn { position:absolute; top:.7rem; right:.7rem; font-size:.7rem; font-weight:600; background:rgba(255,255,255,.08); color: var(--code-text); border:1px solid rgba(255,255,255,.14); padding:.35rem .6rem; border-radius:.3rem; cursor:pointer; display:flex; align-items:center; gap:.3rem; }
+  .code-block .copy-btn:hover { background:rgba(255,255,255,.16); }
+  .code-block .copy-btn svg { width:.8rem; height:.8rem; }
+  .code-block ol { margin:0; padding: 1rem 1rem 1rem 3.2rem; font-family: var(--mono); font-size:.775rem; line-height:1.7; color: var(--code-text); max-height: 420px; overflow:auto; }
+  .code-block ol li { white-space:pre; }
+  .code-block ol li::marker { color:#5b665f; font-size:.7rem; }
+
+  .install-steps { display:flex; flex-direction:column; gap:1rem; }
+  .install-step { display:flex; gap:1rem; background: var(--bg-elevated); border:1px solid var(--line); border-radius:.6rem; padding:1.1rem; }
+  .install-step .num { font-family: var(--display); font-weight:700; font-size:1.1rem; color: var(--accent); width:2rem; flex-shrink:0; }
+  .install-step h4 { margin:0 0 .3rem; font-size:.9375rem; }
+  .install-step p { margin:0; font-size:.8125rem; color: var(--text-soft); line-height:1.55; }
+  .install-step .snippet { margin-top:.6rem; }
+
+  .ai-grid { display:grid; grid-template-columns: 1.1fr .9fr; gap:1.5rem; align-items:start; }
+  @media (max-width: 860px) { .ai-grid, .credit-top { grid-template-columns:1fr; } }
+  .ai-tools { display:flex; flex-direction:column; gap:.75rem; }
+  .ai-tool { display:flex; gap:.75rem; align-items:flex-start; background: var(--bg-elevated); border:1px solid var(--line); border-radius:.5rem; padding:.9rem; }
+  .ai-tool .ico { width:2rem; height:2rem; border-radius:.4rem; background: var(--accent-soft); color: var(--accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .ai-tool .ico svg { width:1rem; height:1rem; }
+  .ai-tool h5 { margin:0 0 .2rem; font-size:.85rem; }
+  .ai-tool p { margin:0; font-size:.75rem; color: var(--text-soft); line-height:1.5; }
+
+  .credits-section { background: var(--bg-sunken); }
+  .credit-top { display:grid; grid-template-columns: 1.3fr .7fr; gap:1.5rem; margin-bottom:1.5rem; }
+  .credit-main { background: var(--bg-elevated); border:1px solid var(--line); border-radius:.75rem; padding:1.5rem; display:flex; gap:1.1rem; align-items:center; }
+  .avatar-lg { width:4.5rem; height:4.5rem; border-radius:50%; flex-shrink:0; }
+  .credit-main .who { font-family: var(--display); font-weight:700; font-size:1.15rem; }
+  .credit-main .role { font-size:.8125rem; color: var(--text-soft); margin:.2rem 0 .6rem; }
+  .credit-main .links { display:flex; gap:.6rem; flex-wrap:wrap; }
+  .credit-main .links a { display:inline-flex; align-items:center; gap:.4rem; font-size:.75rem; font-weight:600; text-decoration:none; background: var(--bg-sunken); border:1px solid var(--line); padding:.4rem .7rem; border-radius:.4rem; color: var(--text); }
+  .credit-main .links a:hover { border-color: var(--accent); color: var(--accent); }
+  .credit-main .links svg { width:.85rem; height:.85rem; }
+  .credit-side { display:flex; flex-direction:column; gap:1rem; }
+  .credit-mini { background: var(--bg-elevated); border:1px solid var(--line); border-radius:.6rem; padding:1rem; display:flex; gap:.75rem; align-items:flex-start; flex:1; }
+  .credit-mini .ico { width:2.4rem; height:2.4rem; border-radius:.5rem; background: var(--accent-soft); color: var(--accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .credit-mini .ico svg { width:1.2rem; height:1.2rem; }
+  .credit-mini .who { font-weight:700; font-size:.85rem; margin-bottom:.15rem; }
+  .credit-mini .what { font-size:.75rem; color: var(--text-soft); line-height:1.5; }
+  footer.bottom-bar { border-top:1px solid var(--line); padding:1.5rem 0; font-size:.8125rem; color: var(--text-soft); }
+  footer.bottom-bar a { color: var(--text-soft); text-decoration:none; }
+  footer.bottom-bar a:hover { color: var(--accent); }
+
+  @media (max-width: 640px) {
+    .credit-main { flex-direction:column; text-align:center; }
+    .credit-main .links { justify-content:center; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="dot"></span> apex-vita-ui.skill</a>
+    <nav>
+      <a href="#library">Components</a>
+      <a href="#demo">Live demo</a>
+      <a href="#prompts">Prompts</a>
+      <a href="#install">Install</a>
+      <a href="#ai">Use in AI</a>
+      <a href="#credits">Credits</a>
+    </nav>
+    <div class="nav-right">
+      <button class="icon-btn" id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <a class="btn-star" href="https://github.com/raju-bd/apex-vita-ui.skill" target="_blank" rel="noopener">★ Star</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow anim-1">Oracle APEX · Universal Theme 42 · Vita</span>
+    <h1 class="anim-2">Give any AI the actual <em>design tokens</em>, not a guess at what APEX looks like.</h1>
+    <p class="lede anim-3">A distilled, browser-ready reference for Oracle APEX's Vita design system — 300+ resolved
+      CSS custom properties, 45 real component types, and a worked example of building a brand-new Theme Style
+      the way Oracle builds its own. Drop it into any AI's context and get markup that's actually consistent
+      with a real APEX page.</p>
+    <div class="hero-ctas anim-4">
+      <a class="btn-primary" href="https://github.com/raju-bd/apex-vita-ui.skill" target="_blank" rel="noopener">Get the skill on GitHub →</a>
+      <a class="btn-secondary" href="#library">Browse components ↓</a>
+    </div>
+    <div class="clone-box anim-4">
+      <span>git clone https://github.com/raju-bd/apex-vita-ui.skill.git</span>
+      <button data-copy="git clone https://github.com/raju-bd/apex-vita-ui.skill.git">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy
+      </button>
+    </div>
+
+    <div class="demo-shell anim-5" id="demo">
+      <div class="demo-toolbar">
+        <span class="label">tokens/*.css — live, unmodified from the repo</span>
+        <div class="style-switch">
+          <button data-style="vita-light">Vita</button>
+          <button data-style="vita-dark">Vita Dark</button>
+          <button data-style="vita-red">Vita Red</button>
+          <button data-style="vita-emerald" class="active">Vita Emerald</button>
+        </div>
+      </div>
+      <div class="app-header"><span>Elite Paint ERP</span><span>Dashboard</span></div>
+      <div class="app-layout">
+        <div class="app-nav">
+          <div class="active">Dashboard</div><div>Sales Orders</div><div>Inventory</div><div>Reports</div>
+        </div>
+        <div class="app-main">
+          <div class="app-grid">
+            <div class="t-Region">
+              <div class="t-Region-header">Revenue <span class="t-Badge">+12%</span></div>
+              <div class="t-Region-body">৳ 4,52,000 this month.<br><br><button class="t-Button t-Button--hot">View report</button></div>
+            </div>
+            <div class="t-Region">
+              <div class="t-Region-header">Open Orders</div>
+              <div class="t-Region-body">18 pending<br><br><button class="t-Button">Review</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="library" class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Component library</span>
+      <h2>45 Universal Theme region types, mapped and tokenized</h2>
+      <p>Every region type Oracle APEX ships in Page Designer, grouped the way you'd actually reach for them.
+        Expand a category to see what each one is for — all styled purely with tokens from this repo.</p>
+    </div>
+    <div class="accordion" id="accordion"></div>
+  </div>
+</section>
+
+<section id="spotlight" class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Spotlight</span>
+      <h2>A few of those 45, fully live</h2>
+      <p>Rendered right now, in your browser, using nothing but the CSS custom properties in <code class="inline">tokens/vita-emerald.css</code>.</p>
+    </div>
+    <div class="spotlight-grid">
+      <div class="spotlight-card"><div class="sp-label">Alert</div>
+        <div class="t-Alert t-Alert--success"><span>✓</span><div><strong>Saved</strong><br>Record updated successfully.</div></div>
+      </div>
+      <div class="spotlight-card"><div class="sp-label">Metric Card</div>
+        <div class="metric-card"><div class="m-label">Open Orders</div><div class="m-value">128</div><div class="m-trend">▲ 8% vs last week</div></div>
+      </div>
+      <div class="spotlight-card"><div class="sp-label">Breadcrumb + Tabs</div>
+        <div class="t-Breadcrumb">Home <span>/</span> Customers <span>/</span> <b>Rahim Traders</b></div>
+        <div class="t-Tabs" style="margin-top:.6rem;"><span class="is-active">Overview</span><span>Orders</span><span>Invoices</span></div>
+      </div>
+      <div class="spotlight-card"><div class="sp-label">Avatar + Comments</div>
+        <div style="display:flex; gap:.6rem;"><div class="avatar-circle">MA</div>
+          <div style="font-size:.8125rem;"><strong>Raju</strong> <span style="color:var(--text-soft); font-size:.7rem;">2h ago</span><br>Shipment confirmed for tomorrow.</div></div>
+      </div>
+      <div class="spotlight-card"><div class="sp-label">Badges List</div>
+        <div style="display:flex; gap:.4rem; flex-wrap:wrap;"><span class="t-Badge">Retail</span><span class="t-Badge">Priority</span><span class="t-Badge">Dhaka</span></div>
+      </div>
+      <div class="spotlight-card"><div class="sp-label">Button Group</div>
+        <div style="display:flex;"><button class="t-Button" style="border-radius: var(--a-button-border-radius) 0 0 var(--a-button-border-radius);">Day</button><button class="t-Button t-Button--hot" style="border-radius:0;">Week</button><button class="t-Button" style="border-radius:0 var(--a-button-border-radius) var(--a-button-border-radius) 0;">Month</button></div>
+      </div>
+      <div class="spotlight-card"><div class="sp-label">Timeline</div>
+        <div class="timeline">
+          <div class="t-item"><div class="t-date">10:02 AM</div>Order placed</div>
+          <div class="t-item"><div class="t-date">11:40 AM</div>Payment confirmed</div>
+          <div class="t-item"><div class="t-date">2:15 PM</div>Shipped</div>
+        </div>
+      </div>
+      <div class="spotlight-card"><div class="sp-label">Card Region</div>
+        <div class="t-Region"><div class="t-Region-header">Nasrin Enterprise <span class="t-Badge">Shipped</span></div><div class="t-Region-body">Order #4819 · ৳ 27,650<br><br><button class="t-Button t-Button--simple">Track</button></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="prompts" class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Example prompts → output</span>
+      <h2>What "giving an AI the skill" looks like</h2>
+      <p>Each card is a real prompt, with a rendered <strong>Output view</strong> and the exact <strong>Output code</strong> the AI returned — copy either straight into a project.</p>
+    </div>
+    <div id="prompt-cards"></div>
+
+    <div class="prompt-card" id="zero-css-card">
+      <div class="pc-head">
+        <div class="pc-title">Bonus: a "zero new CSS" template</div>
+        <div class="pc-prompt">Build a settings page — title bar, breadcrumb, two form fields and a save button —
+          using ONLY the classes and CSS custom properties already defined by vita-emerald.css. Do not write
+          a single new hex color; every value must reference an existing token.</div>
+      </div>
+      <div class="pc-tabs">
+        <button class="pc-tab-btn active" data-target="zc-view">Output view</button>
+        <button class="pc-tab-btn" data-target="zc-code">Output code</button>
+      </div>
+      <div class="pc-body">
+        <div class="pc-pane active" id="zc-view">
+          <div class="pc-view">
+            <div class="t-Breadcrumb">Home <span>/</span> <b>Settings</b></div>
+            <h3 style="font-family:var(--display); margin:.5rem 0 1rem;">Company Profile</h3>
+            <div class="t-Region">
+              <div class="t-Region-body">
+                <label style="display:block; font-size:.75rem; margin-bottom:.3rem;">Company Name</label>
+                <input style="width:100%; margin-bottom:.9rem; background:var(--a-field-input-background-color); border:1px solid var(--a-field-input-border-color); border-radius:var(--a-field-input-border-radius); padding:.5rem;" value="Elite Paint Ltd.">
+                <label style="display:block; font-size:.75rem; margin-bottom:.3rem;">Support Email</label>
+                <input style="width:100%; margin-bottom:1rem; background:var(--a-field-input-background-color); border:1px solid var(--a-field-input-border-color); border-radius:var(--a-field-input-border-radius); padding:.5rem;" value="support@elitepaint.com.bd">
+                <button class="t-Button t-Button--hot">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-pane" id="zc-code"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="install" class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Installation</span>
+      <h2>Three ways to use it — pick what fits</h2>
+    </div>
+    <div class="install-steps">
+      <div class="install-step">
+        <div class="num">01</div>
+        <div>
+          <h4>Clone or download the repo</h4>
+          <p>Grab the whole skill package — no dependencies, no build step.</p>
+          <div class="snippet"><div class="code-block" data-code-inline="git clone https://github.com/raju-bd/apex-vita-ui.skill.git"></div></div>
+        </div>
+      </div>
+      <div class="install-step">
+        <div class="num">02</div>
+        <div>
+          <h4>Link the tokens directly in any HTML page</h4>
+          <p>Load the base stylesheet, then optionally a style delta on top — the same markup re-skins instantly.</p>
+          <div class="snippet"><div class="code-block" data-code-inline='&lt;link rel="stylesheet" href="tokens/vita-light.css"&gt;
+&lt;link rel="stylesheet" href="tokens/vita-emerald.css"&gt;'></div></div>
+        </div>
+      </div>
+      <div class="install-step">
+        <div class="num">03</div>
+        <div>
+          <h4>Use the new style inside real APEX</h4>
+          <p>Paste <code class="inline">tokens/vita-emerald.less</code> into Theme Roller's custom LESS editor (or wire it into a Theme Style's LESS files) for a pixel-perfect, fully-computed compile.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ai" class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Using it in AI</span>
+      <h2>Feed the skill to whatever you're already using</h2>
+      <p>Paste <code class="inline">SKILL.md</code> and <code class="inline">components-reference.md</code> in as context, then ask normally.</p>
+    </div>
+    <div class="ai-grid">
+      <div class="code-block" data-code-inline="Using the Vita Emerald design tokens from apex-vita-ui.skill,
+build an HTML customer dashboard: a header, a left nav, three
+stat cards, an alert, and a report table. Use var(--token-name)
+for every color/spacing value — no hardcoded hex."></div>
+      <div class="ai-tools">
+        <div class="ai-tool">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></div>
+          <div><h5>Claude Projects</h5><p>Add both files as Project knowledge — every chat in that project inherits the tokens.</p></div>
+        </div>
+        <div class="ai-tool">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <div><h5>ChatGPT Custom GPT / Gemini Gem</h5><p>Upload the two Markdown files as knowledge files when configuring the assistant.</p></div>
+        </div>
+        <div class="ai-tool">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17l6-6-6-6M12 19h8"/></svg></div>
+          <div><h5>Cursor / Windsurf rules file</h5><p>Copy the token map and class reference into <code class="inline">.cursor/rules</code> so every generation follows it.</p></div>
+        </div>
+        <div class="ai-tool">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4zM4 9h16M9 4v16"/></svg></div>
+          <div><h5>Any chat model</h5><p>No file upload? Paste SKILL.md straight into the system or first user message — it's plain Markdown.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="credits" class="reveal credits-section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Credits</span>
+      <h2>Built on real shoulders</h2>
+    </div>
+    <div class="credit-top">
+      <div class="credit-main">
+        <img class="avatar-lg" alt="Md. Mahfuzul Amin (Raju)" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%230E9F6E'/%3E%3Cstop offset='100%25' stop-color='%230C7F5A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='96' height='96' rx='48' fill='url(%23g)'/%3E%3Ctext x='50%25' y='54%25' font-family='Space Grotesk, sans-serif' font-size='34' font-weight='700' fill='white' text-anchor='middle' dominant-baseline='middle'%3EMA%3C/text%3E%3C/svg%3E">
+        <div>
+          <div class="who">Md. Mahfuzul Amin (Raju)</div>
+          <div class="role">IT Manager &amp; Oracle APEX Developer, OCP — built and maintains this repo</div>
+          <div class="links">
+            <a href="https://github.com/raju-bd" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.89-2.78.62-3.37-1.21-3.37-1.21-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.86.09-.66.35-1.12.64-1.38-2.22-.26-4.56-1.15-4.56-5.11 0-1.13.39-2.05 1.03-2.77-.1-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.06a9.24 9.24 0 0 1 5 0c1.91-1.34 2.75-1.06 2.75-1.06.55 1.42.2 2.47.1 2.73.64.72 1.03 1.64 1.03 2.77 0 3.97-2.34 4.85-4.57 5.1.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
+              github.com/raju-bd
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="credit-side">
+        <div class="credit-mini">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></div>
+          <div><div class="who">Oracle APEX</div><div class="what">Universal Theme 42 and the Vita style family this skill is derived from.</div></div>
+        </div>
+        <div class="credit-mini">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></div>
+          <div><div class="who">Claude (Anthropic)</div><div class="what">Used to research, distill, and author this skill package and landing page.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="bottom-bar">
+  <div class="wrap" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+    <span>MIT licensed. Oracle APEX remains Oracle's property — see LICENSE.</span>
+    <a href="https://github.com/raju-bd/apex-vita-ui.skill" target="_blank" rel="noopener">github.com/raju-bd/apex-vita-ui.skill ★</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var saved = localStorage.getItem('apex-vita-theme');
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var theme = saved || (prefersDark ? 'dark' : 'light');
+  root.setAttribute('data-theme', theme);
+  document.getElementById('theme-toggle').addEventListener('click', function () {
+    theme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('apex-vita-theme', theme);
+  });
+})();
+
+(function () {
+  var buttons = document.querySelectorAll('.style-switch button');
+  var delta = document.getElementById('delta-css');
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      buttons.forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var v = btn.dataset.style;
+      delta.href = v === 'vita-light' ? '' : 'tokens/' + v + '.css';
+    });
+  });
+})();
+
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest('[data-copy]');
+  if (!btn) return;
+  navigator.clipboard.writeText(btn.getAttribute('data-copy'));
+  var original = btn.innerHTML;
+  btn.innerHTML = 'Copied!';
+  setTimeout(function () { btn.innerHTML = original; }, 1400);
+});
+
+(function () {
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) { if (en.isIntersecting) en.target.classList.add('in-view'); });
+  }, { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+})();
+
+function renderCodeBlock(container, code) {
+  var lines = code.replace(/^\n/, '').replace(/\n$/, '').split('\n');
+  var ol = document.createElement('ol');
+  lines.forEach(function (line) {
+    var li = document.createElement('li');
+    li.textContent = line.length ? line : ' ';
+    ol.appendChild(li);
+  });
+  var copyBtn = document.createElement('button');
+  copyBtn.className = 'copy-btn';
+  copyBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
+  copyBtn.addEventListener('click', function () {
+    navigator.clipboard.writeText(code.trim());
+    copyBtn.innerHTML = 'Copied!';
+    setTimeout(function () {
+      copyBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy';
+    }, 1400);
+  });
+  container.appendChild(copyBtn);
+  container.appendChild(ol);
+}
+document.querySelectorAll('[data-code-inline]').forEach(function (el) {
+  renderCodeBlock(el, el.getAttribute('data-code-inline'));
+});
+
+var ICONS = {
+  layout: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="8" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',
+  nav: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>',
+  cards: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="8" height="8" rx="1"/><rect x="13" y="4" width="8" height="8" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/></svg>',
+  data: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg>',
+  media: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>',
+  form: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h16"/></svg>',
+  status: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>',
+  buttons: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="9" width="8" height="6" rx="2"/><rect x="13" y="9" width="8" height="6" rx="2"/></svg>',
+  dynamic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3L4 12l4 9M16 3l4 9-4 9"/></svg>'
+};
+var CATEGORIES = [
+  { name: 'Layout & Structure', icon: 'layout', items: [
+    ['Flexbox Container','Wrap regions in a CSS flexbox row or column with gap and alignment controls.'],
+    ['Content Block','Free-form rich text block for narrative content between regions.'],
+    ['Content Row','Horizontal row of stacked content items, ideal for feature highlights.'],
+    ['Standard','The default plain region — a container for any child component.'],
+    ['Static Content','Raw HTML/text region rendered exactly as authored.'],
+    ['Hero','Full-width introductory banner with heading, copy and a primary action.'],
+    ['Title Bar','Page or region heading bar with actions anchored to the right.']
+  ]},
+  { name: 'Navigation', icon: 'nav', items: [
+    ['Navigation Bar','Top-level horizontal navigation with icons and labels.'],
+    ['Menu Bar','Multi-level dropdown menu bar for grouped actions.'],
+    ['Menu Popup','Contextual popup menu triggered from a button or icon.'],
+    ['Breadcrumb','Hierarchical trail showing the current page\'s position.'],
+    ['Tabs Container','Switch between grouped panels without changing page.'],
+    ['Tree','Expandable hierarchical navigation, e.g. category or org charts.'],
+    ['Wizard','Multi-step guided flow with a progress indicator.']
+  ]},
+  { name: 'Cards & Lists', icon: 'cards', items: [
+    ['Card Regions','Auto-generated cards from a SQL query — icon, title, badge, actions.'],
+    ['Card Templates','Fully custom card layout built from a named template.'],
+    ['List View','Vertical list of records with an icon and secondary text.'],
+    ['Media List','List rows built around an image or media thumbnail.'],
+    ['Links List','Simple vertical list of navigation links.'],
+    ['Badges List','Row of small status badges, e.g. filters or tags.'],
+    ['Value Attribute Pairs','Label/value rows for read-only detail views.'],
+    ['Comments','Threaded comment feed with avatar, timestamp and message.'],
+    ['Timeline','Chronological list of events along a vertical axis.']
+  ]},
+  { name: 'Data & Reports', icon: 'data', items: [
+    ['Interactive Report','Sortable, filterable report end users can fully customize.'],
+    ['Interactive Grid','Spreadsheet-like editable grid with inline row actions.'],
+    ['Column Toggle Report','Report where users show/hide columns responsively.'],
+    ['Reflow Report','Report that reflows into stacked cards on small screens.'],
+    ['Region Display Selector','Switch a region between report/chart/card view.']
+  ]},
+  { name: 'Media & Visual', icon: 'media', items: [
+    ['Charts','Bar, line, pie and area charts on a shared Theme palette.'],
+    ['Calendar','Month/week/day event calendar bound to a SQL source.'],
+    ['Carousel','Auto-rotating slide gallery for promotions or highlights.'],
+    ['Image','Single responsive image region with optional caption.']
+  ]},
+  { name: 'Forms & Guidance', icon: 'form', items: [
+    ['Form Field','A single labeled input — text, select, date, etc.'],
+    ['Help Text','Short inline guidance shown beneath a field.'],
+    ['Contextual Info','Tooltip-style hint icon attached to a label.']
+  ]},
+  { name: 'Feedback & Status', icon: 'status', items: [
+    ['Alert','Inline success/info/warning/danger banner message.'],
+    ['Badge','Compact status or count pill.'],
+    ['Metric Card','Big-number KPI card with trend and label.'],
+    ['Avatar','Circular user or entity image with initials fallback.'],
+    ['Inline Dialog','Popup panel anchored to a trigger element.'],
+    ['Collapsible','Expand/collapse panel for optional detail.']
+  ]},
+  { name: 'Buttons', icon: 'buttons', items: [
+    ['Button','A single action button — hot, primary, simple, danger.'],
+    ['Button Container','Groups buttons together with consistent spacing.'],
+    ['Button Group','Segmented set of mutually exclusive toggle buttons.']
+  ]},
+  { name: 'Dynamic Content', icon: 'dynamic', items: [
+    ['PL/SQL Dynamic Content','Server-rendered region driven by PL/SQL logic.']
+  ]}
+];
+
+var accWrap = document.getElementById('accordion');
+CATEGORIES.forEach(function (cat, idx) {
+  var item = document.createElement('div');
+  item.className = 'acc-item' + (idx === 0 ? ' open' : '');
+  var chips = cat.items.map(function (it) {
+    return '<div class="feat-chip"><div class="fc-name">' + it[0] + '</div><div class="fc-desc">' + it[1] + '</div></div>';
+  }).join('');
+  item.innerHTML =
+    '<button class="acc-head">' +
+      '<span class="left"><span class="cat-icon">' + ICONS[cat.icon] + '</span>' +
+      '<span class="title">' + cat.name + '</span><span class="count">' + cat.items.length + '</span></span>' +
+      '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>' +
+    '</button>' +
+    '<div class="acc-panel"><div class="acc-panel-inner"><div class="acc-grid">' + chips + '</div></div></div>';
+  item.querySelector('.acc-head').addEventListener('click', function () {
+    item.classList.toggle('open');
+  });
+  accWrap.appendChild(item);
+});
+
+var PROMPTS = [
+  {
+    title: 'Customer dashboard with metric cards + alert',
+    prompt: 'Using the Vita Emerald design tokens, build a customer dashboard region: a header row with a status badge, a two-line summary, and a hot button. Use t-Region / t-Button class names and var(--token) for every color, radius, and shadow — no hardcoded hex values.',
+    view:
+      '<div class="t-Region"><div class="t-Region-header">Monthly Revenue <span class="t-Badge">+12%</span></div>' +
+      '<div class="t-Region-body">৳ 4,52,000 this month, up from ৳ 4,03,000 last month.<br><br>' +
+      '<button class="t-Button t-Button--hot">View full report</button></div></div>',
+    code:
+'<div class="t-Region">\n' +
+'  <div class="t-Region-header">\n' +
+'    Monthly Revenue\n' +
+'    <span class="t-Badge">+12%</span>\n' +
+'  </div>\n' +
+'  <div class="t-Region-body">\n' +
+'    ৳ 4,52,000 this month, up from ৳ 4,03,000 last month.\n' +
+'    <button class="t-Button t-Button--hot">View full report</button>\n' +
+'  </div>\n' +
+'</div>\n\n' +
+'<style>\n' +
+'.t-Region        { background: var(--ut-region-background-color);\n' +
+'                    border: 1px solid var(--ut-region-border-color);\n' +
+'                    border-radius: var(--ut-region-border-radius); }\n' +
+'.t-Region-header { background: var(--ut-region-header-background-color); }\n' +
+'.t-Button--hot    { background: var(--ut-palette-primary);\n' +
+'                    color: var(--ut-palette-primary-contrast); }\n' +
+'</style>'
+  },
+  {
+    title: 'Interactive Report with a Column Toggle',
+    prompt: 'Build a report table for recent orders (order, customer, status, amount) styled like an APEX Interactive Report, using --a-gv-* and --ut-report-* tokens. Include a toolbar with a "Columns" toggle button.',
+    view:
+      '<div class="t-Region"><div class="t-Region-header">Recent Orders <button class="t-Button" style="margin-left:auto;">⚙ Columns</button></div>' +
+      '<table style="width:100%; border-collapse:collapse; font-size:.8125rem;">' +
+      '<thead><tr style="background:var(--ut-report-header-background-color);"><th style="text-align:left; padding:.5rem .8rem;">Order</th><th style="text-align:left; padding:.5rem .8rem;">Customer</th><th style="text-align:left; padding:.5rem .8rem;">Status</th></tr></thead>' +
+      '<tbody><tr><td style="padding:.5rem .8rem; border-top:1px solid var(--ut-report-cell-border-color);">#4821</td><td style="padding:.5rem .8rem; border-top:1px solid var(--ut-report-cell-border-color);">Rahim Traders</td><td style="padding:.5rem .8rem; border-top:1px solid var(--ut-report-cell-border-color);"><span class="t-Badge">Confirmed</span></td></tr></tbody></table></div>',
+    code:
+'<div class="t-Region">\n' +
+'  <div class="t-Region-header">\n' +
+'    Recent Orders\n' +
+'    <button class="t-Button">⚙ Columns</button>\n' +
+'  </div>\n' +
+'  <table class="a-IRR-table">\n' +
+'    <thead>\n' +
+'      <tr><th>Order</th><th>Customer</th><th>Status</th></tr>\n' +
+'    </thead>\n' +
+'    <tbody>\n' +
+'      <tr><td>#4821</td><td>Rahim Traders</td>\n' +
+'          <td><span class="t-Badge">Confirmed</span></td></tr>\n' +
+'    </tbody>\n' +
+'  </table>\n' +
+'</div>\n\n' +
+'<style>\n' +
+'.a-IRR-table th { background: var(--ut-report-header-background-color);\n' +
+'                   padding: var(--a-gv-header-cell-padding-y) var(--a-gv-header-cell-padding-x); }\n' +
+'.a-IRR-table td { padding: var(--a-gv-cell-padding-y) var(--a-gv-cell-padding-x);\n' +
+'                   border-top: 1px solid var(--ut-report-cell-border-color); }\n' +
+'</style>'
+  },
+  {
+    title: 'Wizard progress + Tabs container',
+    prompt: 'Show a 3-step wizard progress indicator above a Tabs Container with two tabs, "Details" active. Use --ut-tabs-* tokens for the active tab underline and font-weight.',
+    view:
+      '<div style="display:flex; gap:.5rem; margin-bottom:.9rem; font-size:.75rem;">' +
+      '<span style="background:var(--ut-palette-primary); color:#fff; border-radius:1rem; padding:.25rem .7rem;">1 · Details</span>' +
+      '<span style="background:var(--ut-component-badge-background-color); border-radius:1rem; padding:.25rem .7rem;">2 · Review</span>' +
+      '<span style="background:var(--ut-component-badge-background-color); border-radius:1rem; padding:.25rem .7rem;">3 · Confirm</span></div>' +
+      '<div class="t-Tabs"><span class="is-active">Details</span><span>History</span></div>',
+    code:
+'<div class="t-WizardProgress">\n' +
+'  <span class="is-active">1 · Details</span>\n' +
+'  <span>2 · Review</span>\n' +
+'  <span>3 · Confirm</span>\n' +
+'</div>\n\n' +
+'<div class="t-Tabs">\n' +
+'  <span class="is-active">Details</span>\n' +
+'  <span>History</span>\n' +
+'</div>\n\n' +
+'<style>\n' +
+'.t-Tabs span.is-active {\n' +
+'  color: var(--ut-tabs-item-active-text-color);\n' +
+'  font-weight: var(--ut-tabs-item-active-font-weight);\n' +
+'  border-bottom: 2px solid var(--ut-palette-primary);\n' +
+'}\n' +
+'</style>'
+  }
+];
+var pcWrap = document.getElementById('prompt-cards');
+PROMPTS.forEach(function (p, i) {
+  var card = document.createElement('div');
+  card.className = 'prompt-card';
+  var vId = 'pv-' + i, cId = 'pc-' + i;
+  card.innerHTML =
+    '<div class="pc-head"><div class="pc-title">' + p.title + '</div><div class="pc-prompt">' + p.prompt + '</div></div>' +
+    '<div class="pc-tabs">' +
+      '<button class="pc-tab-btn active" data-target="' + vId + '">Output view</button>' +
+      '<button class="pc-tab-btn" data-target="' + cId + '">Output code</button>' +
+    '</div>' +
+    '<div class="pc-body">' +
+      '<div class="pc-pane active" id="' + vId + '"><div class="pc-view">' + p.view + '</div></div>' +
+      '<div class="pc-pane" id="' + cId + '"></div>' +
+    '</div>';
+  pcWrap.appendChild(card);
+  renderCodeBlock(card.querySelector('#' + cId), p.code);
+
+  card.querySelectorAll('.pc-tab-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      card.querySelectorAll('.pc-tab-btn').forEach(function (b) { b.classList.remove('active'); });
+      card.querySelectorAll('.pc-pane').forEach(function (pane) { pane.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.target).classList.add('active');
+    });
+  });
+});
+
+(function () {
+  var card = document.getElementById('zero-css-card');
+  var codePane = document.getElementById('zc-code');
+  var code =
+'<div class="t-Breadcrumb">Home <span>/</span> <b>Settings</b></div>\n' +
+'<h3 class="t-PageTitle">Company Profile</h3>\n\n' +
+'<div class="t-Region">\n' +
+'  <div class="t-Region-body">\n' +
+'    <div class="t-Form-fieldContainer">\n' +
+'      <label class="t-Form-label">Company Name</label>\n' +
+'      <input class="apex-item-text" value="Elite Paint Ltd.">\n' +
+'    </div>\n' +
+'    <div class="t-Form-fieldContainer">\n' +
+'      <label class="t-Form-label">Support Email</label>\n' +
+'      <input class="apex-item-text" value="support@elitepaint.com.bd">\n' +
+'    </div>\n' +
+'    <button class="t-Button t-Button--hot">Save changes</button>\n' +
+'  </div>\n' +
+'</div>\n\n' +
+'<!-- Not one new hex value: every color, radius and spacing\n' +
+'     below already exists in vita-emerald.css -->\n' +
+'<style>\n' +
+'.apex-item-text  { background: var(--a-field-input-background-color);\n' +
+'                    border: 1px solid var(--a-field-input-border-color);\n' +
+'                    border-radius: var(--a-field-input-border-radius); }\n' +
+'.t-Button--hot    { background: var(--ut-palette-primary);\n' +
+'                    color: var(--ut-palette-primary-contrast); }\n' +
+'</style>';
+  renderCodeBlock(codePane, code);
+  card.querySelectorAll('.pc-tab-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      card.querySelectorAll('.pc-tab-btn').forEach(function (b) { b.classList.remove('active'); });
+      card.querySelectorAll('.pc-pane').forEach(function (pane) { pane.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.target).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

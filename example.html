@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Universal Theme 42 — Vita Skill Demo</title>
+<link rel="stylesheet" href="tokens/vita-light.css" id="base-css">
+<link rel="stylesheet" href="tokens/vita-emerald.css" id="delta-css">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--ut-body-background-color);
+    color: var(--ut-body-text-color);
+  }
+  header.app-header {
+    height: var(--ut-header-height);
+    background: var(--ut-header-background-color);
+    color: var(--ut-header-text-color);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 var(--ut-header-padding, .75rem);
+    box-shadow: var(--ut-header-box-shadow);
+  }
+  .switcher { display:flex; gap:.5rem; align-items:center; font-size:.75rem; }
+  .switcher select { padding:.25rem .5rem; border-radius:.25rem; border:1px solid rgba(255,255,255,.4); background:rgba(255,255,255,.15); color:inherit; }
+
+  .layout { display:flex; min-height: calc(100vh - 3rem); }
+  nav.app-nav {
+    width: var(--ut-nav-width);
+    background: var(--ut-body-nav-background-color);
+    color: var(--ut-body-nav-text-color);
+    padding: 1rem 0;
+    flex-shrink: 0;
+  }
+  nav.app-nav ul { list-style:none; margin:0; padding:0; }
+  nav.app-nav li { padding: var(--a-treeview-node-padding-y, .5rem) 1rem; font-size:.8125rem; cursor:pointer; }
+  nav.app-nav li.active { background: var(--a-treeview-node-selected-background-color); color: var(--a-treeview-node-selected-text-color); }
+
+  main { flex:1; padding: 1.5rem; }
+  .title-bar { background: var(--ut-body-title-background-color); color: var(--ut-body-title-text-color); padding: 1rem 1.5rem; margin: -1.5rem -1.5rem 1.5rem; box-shadow: var(--ut-body-title-box-shadow); }
+  .title-bar .crumb { font-size: .75rem; color: var(--ut-breadcrumb-item-text-color); }
+  .title-bar h1 { margin:.25rem 0 0; font-size:1.25rem; }
+
+  .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:1rem; margin-bottom:1.5rem; }
+
+  .t-Region { background: var(--ut-region-background-color); border: var(--ut-region-border-width) solid var(--ut-region-border-color); border-radius: var(--ut-region-border-radius); box-shadow: var(--ut-region-box-shadow); overflow:hidden; }
+  .t-Region-header { background: var(--ut-region-header-background-color); border-bottom:1px solid var(--ut-region-header-border-color); padding: .75rem 1rem; font-weight:600; font-size:.875rem; }
+  .t-Region-body { padding: var(--ut-region-body-padding-y) var(--ut-region-body-padding-x); font-size: var(--ut-region-font-size); line-height: var(--ut-region-line-height); }
+
+  .t-Button {
+    display:inline-flex; align-items:center; gap: var(--a-button-gap-x);
+    background: var(--a-button-background-color); color: var(--a-button-text-color);
+    border: var(--a-button-border-width) solid var(--a-button-border-color);
+    border-radius: var(--a-button-border-radius);
+    box-shadow: var(--a-button-shadow);
+    padding: var(--a-button-padding-y) var(--a-button-padding-x);
+    font-size: var(--a-button-font-size); line-height: var(--a-button-line-height);
+    cursor:pointer;
+  }
+  .t-Button:hover { background: var(--a-button-hover-background-color); }
+  .t-Button--hot { background: var(--ut-palette-primary); color: var(--ut-palette-primary-contrast); border-color:transparent; }
+  .t-Button--primary { background: var(--ut-palette-primary-alt, var(--ut-palette-primary)); color: var(--ut-palette-primary-alt-contrast, #fff); border-color:transparent; }
+  .t-Button--success { background: var(--ut-palette-success); color: var(--ut-palette-success-contrast); border-color:transparent; }
+  .t-Button--warning { background: var(--ut-palette-warning); color: var(--ut-palette-warning-contrast); border-color:transparent; }
+  .t-Button--danger  { background: var(--ut-palette-danger);  color: var(--ut-palette-danger-contrast);  border-color:transparent; }
+  .t-Button--simple  { background: transparent; border-color: var(--ut-palette-primary); color: var(--ut-palette-primary); }
+
+  .t-Badge { display:inline-block; font-size:.75rem; padding:.125rem .5rem; border-radius: var(--ut-component-badge-border-radius); background: var(--ut-component-badge-background-color); color: var(--ut-component-badge-text-color); }
+
+  .t-Alert { display:flex; gap:.75rem; padding:.75rem 1rem; border-radius: var(--ut-component-border-radius); box-shadow: var(--ut-alert-box-shadow); margin-bottom:.75rem; font-size:.8125rem; }
+  .t-Alert--success { background: var(--ut-palette-success-shade); border-left:4px solid var(--ut-palette-success); }
+  .t-Alert--info     { background: var(--ut-palette-info-shade);   border-left:4px solid var(--ut-palette-info); }
+  .t-Alert--warning   { background: var(--ut-palette-warning-shade); border-left:4px solid var(--ut-palette-warning); }
+  .t-Alert--danger    { background: var(--ut-palette-danger-shade);  border-left:4px solid var(--ut-palette-danger); }
+  .t-Alert-title { font-weight: var(--ut-alert-title-font-weight); margin:0 0 .25rem; }
+  .t-Alert-body { color: var(--ut-component-text-muted-color); }
+
+  .field { margin-bottom: 1rem; }
+  .field label { display:block; font-size:.75rem; margin-bottom:.25rem; color: var(--ut-field-label-text-color); }
+  .field input, .field select {
+    width:100%; background: var(--a-field-input-background-color); color: var(--a-field-input-text-color);
+    border: var(--a-field-input-border-width) solid var(--a-field-input-border-color);
+    border-radius: var(--a-field-input-border-radius); padding:.5rem .5rem; font-size:.8125rem;
+  }
+  .field input:focus, .field select:focus { outline:none; border-color: var(--a-field-input-focus-border-color); background: var(--a-field-input-focus-background-color); }
+
+  table.a-IRR-table { width:100%; border-collapse:collapse; font-size: var(--a-gv-font-size); }
+  table.a-IRR-table th { background: var(--ut-report-header-background-color); text-align:left; padding: var(--a-gv-header-cell-padding-y) var(--a-gv-header-cell-padding-x); height: var(--a-gv-header-cell-height); border-bottom:1px solid var(--ut-report-cell-border-color); }
+  table.a-IRR-table td { padding: var(--a-gv-cell-padding-y) var(--a-gv-cell-padding-x); height: var(--a-gv-cell-height); border-bottom:1px solid var(--ut-report-cell-border-color); }
+  table.a-IRR-table tr:hover td { background: var(--a-gv-row-hover-background-color); }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <strong>Elite Paint ERP — Vita Skill Demo</strong>
+  <div class="switcher">
+    <label for="style-select">Theme Style:</label>
+    <select id="style-select">
+      <option value="vita-light">Vita (light)</option>
+      <option value="vita-dark">Vita Dark</option>
+      <option value="vita-red">Vita Red</option>
+      <option value="vita-emerald" selected>Vita Emerald (new style)</option>
+    </select>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="app-nav">
+    <ul>
+      <li class="active">Dashboard</li>
+      <li>Sales Orders</li>
+      <li>Inventory</li>
+      <li>Customers</li>
+      <li>Reports</li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="title-bar">
+      <div class="crumb">Home / Dashboard</div>
+      <h1>Dashboard</h1>
+    </div>
+
+    <div class="t-Alert t-Alert--success">
+      <div>
+        <div class="t-Alert-title">Order #4821 confirmed</div>
+        <div class="t-Alert-body">Shipment scheduled for tomorrow.</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="t-Region">
+        <div class="t-Region-header">Monthly Revenue <span class="t-Badge">+12%</span></div>
+        <div class="t-Region-body">
+          <p>৳ 4,52,000 this month.</p>
+          <button class="t-Button t-Button--hot">View report</button>
+          <button class="t-Button t-Button--simple">Export</button>
+        </div>
+      </div>
+
+      <div class="t-Region">
+        <div class="t-Region-header">Quick Actions</div>
+        <div class="t-Region-body">
+          <button class="t-Button t-Button--primary">New Order</button>
+          <button class="t-Button t-Button--success">Approve</button>
+          <button class="t-Button t-Button--warning">Flag</button>
+          <button class="t-Button t-Button--danger">Cancel</button>
+        </div>
+      </div>
+
+      <div class="t-Region">
+        <div class="t-Region-header">New Customer</div>
+        <div class="t-Region-body">
+          <div class="field">
+            <label for="name">Customer Name</label>
+            <input type="text" id="name" placeholder="Md. Rahim Uddin">
+          </div>
+          <div class="field">
+            <label for="segment">Segment</label>
+            <select id="segment"><option>Retail</option><option>Wholesale</option></select>
+          </div>
+          <button class="t-Button t-Button--hot">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="t-Region">
+      <div class="t-Region-header">Recent Orders</div>
+      <div class="t-Region-body" style="padding:0;">
+        <table class="a-IRR-table">
+          <thead><tr><th>Order</th><th>Customer</th><th>Status</th><th>Amount</th></tr></thead>
+          <tbody>
+            <tr><td>#4821</td><td>Rahim Traders</td><td><span class="t-Badge">Confirmed</span></td><td>৳ 18,400</td></tr>
+            <tr><td>#4820</td><td>Karim Paints</td><td><span class="t-Badge">Pending</span></td><td>৳ 9,200</td></tr>
+            <tr><td>#4819</td><td>Nasrin Enterprise</td><td><span class="t-Badge">Shipped</span></td><td>৳ 27,650</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  document.getElementById('style-select').addEventListener('change', function (e) {
+    var base = document.getElementById('base-css');
+    var delta = document.getElementById('delta-css');
+    var v = e.target.value;
+    if (v === 'vita-light') {
+      base.href = 'tokens/vita-light.css';
+      delta.href = ''; // no delta needed
+    } else {
+      base.href = 'tokens/vita-light.css';
+      delta.href = 'tokens/' + v + '.css';
+    }
+  });
+</script>
+
+</body>
+</html>
