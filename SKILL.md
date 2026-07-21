@@ -1,4 +1,6 @@
-# Oracle APEX Universal Theme 42 — Vita Design System Skill
+# Oracle APEX Universal Theme skill
+
+*(Package / repo slug: `Oracle-apex-ut-UI.skill`)*
 
 **Purpose:** A pre-reference package any AI (Claude, GPT, Gemini, local LLM, etc.) can be
 given so it produces HTML/CSS/layouts that visually and structurally match Oracle APEX's
@@ -11,6 +13,11 @@ Universal Theme 42, "Vita" style family — without needing an actual APEX insta
   - Vita Dark: `https://static.oracle.com/cdn/apex/26.1.2/themes/theme_42/26.1/less/theme/Vita-Dark.less`
   - Vita Red: `https://static.oracle.com/cdn/apex/26.1.2/themes/theme_42/26.1/less/theme/Vita-Red.less`
   - Vita Slate: `https://static.oracle.com/cdn/apex/26.1.2/themes/theme_42/26.1/less/theme/Vita-Slate.less`
+  - Iris: `https://static.oracle.com/cdn/apex/26.1.2/themes/theme_42/26.1/less/theme/Iris.less`
+  - Redwood: `https://static.oracle.com/cdn/apex/26.1.2/themes/theme_42/26.1/less/theme/Redwood.less` and `Redwood-Theme.less`
+  - Legacy Theme Standard (pre-Theme-42, different architecture): `https://static.oracle.com/cdn/apex/26.1.2/app_ui/css/Core.css` and `Theme-Standard.css`
+  - Icon font: `https://static.oracle.com/cdn/apex/26.1.2/libraries/font-apex/2.5.1/css/font-apex.css`
+  - Theme JS (sticky widgets, nav behavior): `https://static.oracle.com/cdn/apex/26.1.2/themes/theme_42/26.1/js/theme42.js`, `https://static.oracle.com/cdn/apex/26.1.2/libraries/apex/minified/widget.stickyWidget.min.js`
 
 Keep those four links handy — they are the canonical, always-current definition. This
 skill distills them into something usable directly in a browser (plain CSS custom
@@ -173,15 +180,26 @@ re-verify exact hex values against Theme Roller before shipping to production.
 ## 6. Files in this package
 
 ```
-apex-vita-ui.skill/
+Oracle-apex-ut-UI.skill/
 ├── SKILL.md                       ← this file
 ├── components-reference.md        ← class names + markup patterns + usage notes
 ├── example.html                   ← live demo: header, nav, region/cards, buttons,
 │                                     alerts, badges, form, table — using the tokens
+├── docs/                          ← GitHub Pages landing/demo site (see repo README)
 └── tokens/
     ├── vita-light.css             ← baseline Vita (light) — full resolved token set
-    ├── vita-dark.css              ← Vita Dark deltas (load after vita-light.css)
-    ├── vita-red.css               ← Vita Red deltas (official Oracle variant)
-    ├── vita-emerald.less          ← NEW custom style, Oracle Theme-Roller-ready source
-    └── vita-emerald.css           ← NEW custom style, browser-ready resolved tokens
+    ├── vita-dark.css              ← Vita Dark deltas (official)
+    ├── vita-red.css               ← Vita Red deltas (official)
+    ├── vita-slate.css             ← Vita Slate deltas (official)
+    ├── iris.css                   ← Iris deltas (official, Redwood-family "Sky" pillar)
+    ├── redwood.css                ← Redwood deltas (official, flagship design system)
+    ├── standard.css                ← Legacy Theme Standard — best-effort approximation only
+    ├── vita-emerald.less           ← NEW custom style, Oracle Theme-Roller-ready LESS source
+    └── vita-emerald.css            ← NEW custom style, browser-ready resolved tokens
 ```
+
+All delta files (everything except `vita-light.css` and the `vita-emerald.*` pair) load
+**after** `vita-light.css` and only override what changes for that style — same markup,
+different `:root` values. `standard.css` is the one exception: it approximates a
+pre-Theme-42 legacy theme that doesn't actually share Theme 42's token architecture, so
+treat it as a rough visual reference rather than an authoritative source.

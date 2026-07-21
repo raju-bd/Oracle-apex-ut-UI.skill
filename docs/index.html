@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>apex-vita-ui.skill — Oracle APEX Universal Theme 42 design tokens for AI</title>
+<title>Oracle APEX Universal Theme skill — Oracle APEX Universal Theme 42 design tokens for AI</title>
 <meta name="description" content="A drop-in design-token reference for Oracle APEX Universal Theme 42 (Vita), built so any AI can generate APEX-accurate HTML/CSS.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,6 +27,13 @@
     --display: 'Space Grotesk', sans-serif;
     --body-font: 'Inter', -apple-system, sans-serif;
     color-scheme: light;
+    /* colorful accent palette used across icons, badges, and hero background */
+    --c1: #0E9F6E; /* emerald */
+    --c2: #3B82F6; /* blue */
+    --c3: #F5A623; /* amber */
+    --c4: #FF6B6B; /* coral */
+    --c5: #A78BFA; /* violet */
+    --c6: #13B6CF; /* cyan */
   }
   html[data-theme="dark"] {
     --bg: #0A0D0B;
@@ -61,8 +68,55 @@
   .hero .anim-3 { animation: floatIn .6s .16s ease both; }
   .hero .anim-4 { animation: floatIn .6s .24s ease both; }
   .hero .anim-5 { animation: floatIn .7s .34s ease both; }
+
+  /* ---------- scroll progress bar ---------- */
+  #scroll-progress { position:fixed; top:0; left:0; height:3px; width:0%; z-index:100;
+    background: linear-gradient(90deg, var(--c1), var(--c2), var(--c5), var(--c4), var(--c3));
+    background-size: 300% 100%; animation: hueSlide 6s linear infinite; transition: width .1s ease-out; }
+  @keyframes hueSlide { from { background-position: 0% 0; } to { background-position: 300% 0; } }
+
+  /* ---------- animated hero gradient blobs ---------- */
+  .hero { position:relative; overflow:hidden; padding: 4rem 0 2.5rem; }
+  .hero-grid { display:grid; grid-template-columns: 1.15fr .95fr; gap:2rem; align-items:center; }
+
+  .hero-visual { width:100%; max-width:440px; margin:0 auto; }
+  .hero-visual svg { width:100%; height:auto; display:block; }
+  .orbit-ring { stroke: color-mix(in srgb, var(--accent) 30%, transparent); transform-origin: 220px 220px; animation: spin 60s linear infinite; }
+  .orbit-ring--rev { stroke: color-mix(in srgb, var(--c5) 26%, transparent); animation-duration: 46s; animation-direction: reverse; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .connector { stroke: color-mix(in srgb, var(--text-soft) 35%, transparent); animation: dashFlow 2.4s linear infinite; }
+  @keyframes dashFlow { to { stroke-dashoffset: -24; } }
+  .chip { transform-box: fill-box; transform-origin: center; animation: chipFloat 6s ease-in-out infinite; }
+  .chip-1 { animation-delay: 0s; }
+  .chip-2 { animation-delay: .6s; }
+  .chip-3 { animation-delay: 1.2s; }
+  .chip-4 { animation-delay: 1.8s; }
+  .chip-5 { animation-delay: 2.4s; }
+  .chip-6 { animation-delay: 3s; }
+  @keyframes chipFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+  .dot { animation: dotPulse 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes dotPulse { 0%,100% { transform: scale(1); opacity:.85; } 50% { transform: scale(1.6); opacity:.35; } }
+  @media (max-width: 960px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-visual { display:none; }
+  }
   @media (prefers-reduced-motion: reduce) {
-    .reveal, .hero [class^="anim-"] { animation:none !important; transition:none !important; opacity:1 !important; transform:none !important; }
+    .orbit-ring, .connector, .chip, .dot { animation:none !important; }
+  }
+  .blob-field { position:absolute; inset:-10% -10% auto -10%; height:130%; z-index:0; pointer-events:none; opacity:.55; }
+  html[data-theme="dark"] .blob-field { opacity:.35; }
+  .blob { position:absolute; border-radius:50%; filter: blur(60px); mix-blend-mode: normal; }
+  .blob-a { width:22rem; height:22rem; top:-4rem; left:-3rem; background: radial-gradient(circle, var(--c1), transparent 70%); animation: driftA 16s ease-in-out infinite; }
+  .blob-b { width:18rem; height:18rem; top:2rem; right:-2rem; background: radial-gradient(circle, var(--c2), transparent 70%); animation: driftB 20s ease-in-out infinite; }
+  .blob-c { width:16rem; height:16rem; bottom:-6rem; left:35%; background: radial-gradient(circle, var(--c5), transparent 70%); animation: driftC 18s ease-in-out infinite; }
+  .blob-d { width:14rem; height:14rem; top:10rem; right:20%; background: radial-gradient(circle, var(--c3), transparent 70%); animation: driftA 22s ease-in-out infinite reverse; }
+  @keyframes driftA { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(2rem,1.5rem) scale(1.1); } }
+  @keyframes driftB { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-1.5rem,2rem) scale(.95); } }
+  @keyframes driftC { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(1.2rem,-1.8rem) scale(1.08); } }
+  .hero > .wrap { position:relative; z-index:1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .hero [class^="anim-"], .blob, #scroll-progress { animation:none !important; transition:none !important; opacity:1 !important; transform:none !important; }
   }
 
   .site-nav { position: sticky; top:0; z-index:60; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: saturate(180%) blur(10px); border-bottom:1px solid var(--line); }
@@ -76,14 +130,32 @@
   .icon-btn { width:2.25rem; height:2.25rem; border-radius:.5rem; border:1px solid var(--line); background: var(--bg-elevated); display:flex; align-items:center; justify-content:center; cursor:pointer; color: var(--text); flex-shrink:0; }
   .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
   .icon-btn svg { width:1.05rem; height:1.05rem; }
-  .btn-star { display:inline-flex; align-items:center; gap:.4rem; background: var(--text); color: var(--bg); text-decoration:none; padding:.5rem .9rem; border-radius:.375rem; font-size:.8125rem; font-weight:600; white-space:nowrap; }
-  .btn-star:hover { opacity:.85; }
-  @media (max-width: 880px) { .site-nav nav { display:none; } }
+  .btn-star { display:inline-flex; align-items:center; gap:.4rem; background: linear-gradient(135deg, var(--c1), var(--c2)); color: #fff; text-decoration:none; padding:.5rem .9rem; border-radius:.375rem; font-size:.8125rem; font-weight:600; white-space:nowrap; box-shadow: 0 .5rem 1rem -.5rem rgba(14,159,110,.6); transition: transform .2s ease, box-shadow .2s ease; }
+  .btn-star:hover { transform: translateY(-1px) scale(1.03); box-shadow: 0 .7rem 1.4rem -.5rem rgba(14,159,110,.7); }
+  .nav-burger { display:none; width:2.25rem; height:2.25rem; border-radius:.5rem; border:1px solid var(--line); background: var(--bg-elevated); align-items:center; justify-content:center; cursor:pointer; color: var(--text); flex-shrink:0; }
+  .nav-burger svg { width:1.1rem; height:1.1rem; }
+  .mobile-menu { display:grid; grid-template-rows:0fr; transition: grid-template-rows .3s ease; border-bottom:1px solid var(--line); background: var(--bg); }
+  .mobile-menu.open { grid-template-rows:1fr; }
+  .mobile-menu-inner { overflow:hidden; min-height:0; }
+  .mobile-menu nav { display:flex; flex-direction:column; padding:.5rem 1.5rem 1rem; }
+  .mobile-menu nav a { padding:.6rem 0; font-size:.9rem; font-weight:500; text-decoration:none; color: var(--text-soft); border-bottom:1px solid var(--line); }
+  .mobile-menu nav a:last-child { border-bottom:none; }
+  @media (max-width: 880px) {
+    .site-nav nav.desktop-links { display:none; }
+    .nav-burger { display:flex; }
+  }
+  @media (min-width: 881px) { .mobile-menu { display:none; } }
 
   .hero { padding: 4rem 0 2.5rem; }
   .eyebrow { font-family: var(--mono); font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; color: var(--accent); background: var(--accent-soft); display:inline-block; padding:.3rem .6rem; border-radius:.25rem; margin-bottom:1.1rem; }
+  #library .eyebrow { color: var(--c1); background: color-mix(in srgb, var(--c1) 14%, transparent); }
+  #spotlight .eyebrow { color: var(--c2); background: color-mix(in srgb, var(--c2) 14%, transparent); }
+  #prompts .eyebrow { color: var(--c5); background: color-mix(in srgb, var(--c5) 14%, transparent); }
+  #install .eyebrow { color: var(--c3); background: color-mix(in srgb, var(--c3) 16%, transparent); }
+  #ai .eyebrow { color: var(--c4); background: color-mix(in srgb, var(--c4) 14%, transparent); }
+  #credits .eyebrow { color: var(--c6); background: color-mix(in srgb, var(--c6) 14%, transparent); }
   .hero h1 { font-family: var(--display); font-size: clamp(2rem,4.4vw,3.3rem); line-height:1.08; margin:0 0 1.1rem; letter-spacing:-.01em; max-width:21ch; }
-  .hero h1 em { font-style:normal; color: var(--accent); }
+  .hero h1 em { font-style:normal; background: linear-gradient(120deg, var(--c1), var(--c2) 60%, var(--c5)); -webkit-background-clip:text; background-clip:text; color:transparent; }
   .hero p.lede { font-size:1.1rem; color: var(--text-soft); max-width:48ch; line-height:1.6; margin:0 0 1.6rem; }
   .hero-ctas { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:1.75rem; }
   .btn-primary, .btn-secondary { text-decoration:none; font-size:.875rem; font-weight:600; padding:.7rem 1.1rem; border-radius:.375rem; display:inline-flex; align-items:center; gap:.5rem; transition:transform .15s ease; }
@@ -100,13 +172,17 @@
   .demo-shell { margin-top:2rem; border-radius:.75rem; overflow:hidden; box-shadow: var(--shadow); }
   .demo-toolbar { background:#fff; border-bottom:1px solid rgba(16,20,24,.08); padding:.6rem 1rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
   .demo-toolbar .label { font-family: var(--mono); font-size:.75rem; color:#545F58; }
-  .style-switch { display:flex; gap:.35rem; flex-wrap:wrap; }
-  .style-switch button { font-size:.75rem; font-weight:600; padding:.4rem .7rem; border-radius:.3rem; border:1px solid rgba(16,20,24,.12); background:#fff; cursor:pointer; color:#545F58; transition:.15s; }
-  .style-switch button.active { background:#10151A; color:#fff; border-color:#10151A; }
+  .style-switch { display:flex; gap:.35rem; flex-wrap:wrap; align-items:center; }
+  .style-switch select { font-size:.75rem; font-weight:600; padding:.45rem .7rem; border-radius:.3rem; border:1px solid rgba(16,20,24,.12); background:#fff; cursor:pointer; color:#10151A; }
 
   .app-header { height: var(--ut-header-height); background: var(--ut-header-background-color); color: var(--ut-header-text-color); display:flex; align-items:center; justify-content:space-between; padding:0 1rem; font-size:.8125rem; font-weight:600; transition: background .3s; }
   .app-layout { display:flex; min-height:340px; background: var(--ut-body-background-color); }
   .app-nav { width:11rem; background: var(--ut-body-nav-background-color); color: var(--ut-body-nav-text-color); padding:.75rem 0; font-size:.75rem; flex-shrink:0; }
+  @media (max-width: 560px) {
+    .app-layout { flex-direction:column; }
+    .app-nav { width:100%; display:flex; overflow-x:auto; padding:.5rem; gap:.25rem; }
+    .app-nav div { padding:.4rem .7rem; white-space:nowrap; border-radius:.3rem; }
+  }
   .app-nav div { padding:.5rem .9rem; }
   .app-nav div.active { background: var(--a-treeview-node-selected-background-color); color: var(--a-treeview-node-selected-text-color); }
   .app-main { flex:1; padding:1.25rem; color: var(--ut-body-text-color); }
@@ -145,11 +221,22 @@
   .section-head p { color: var(--text-soft); line-height:1.6; margin:0; }
 
   .accordion { display:flex; flex-direction:column; gap:.6rem; }
-  .acc-item { border:1px solid var(--line); border-radius:.6rem; background: var(--bg-elevated); overflow:hidden; }
+  .acc-item { border:1px solid var(--line); border-radius:.6rem; background: var(--bg-elevated); overflow:hidden; transition: box-shadow .25s ease, transform .25s ease; }
+  .acc-item:hover { box-shadow: var(--shadow); }
   .acc-head { width:100%; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 1.15rem; background:none; border:none; cursor:pointer; text-align:left; color: var(--text); font-family: var(--body-font); }
   .acc-head .left { display:flex; align-items:center; gap:.75rem; }
-  .acc-head .cat-icon { width:2.1rem; height:2.1rem; border-radius:.5rem; background: var(--accent-soft); color: var(--accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .acc-head .cat-icon { width:2.1rem; height:2.1rem; border-radius:.5rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition: transform .3s ease; }
+  .acc-item.open .cat-icon { transform: rotate(-8deg) scale(1.08); }
   .acc-head .cat-icon svg { width:1.15rem; height:1.15rem; }
+  .acc-item:nth-child(9n+1) .cat-icon { background: color-mix(in srgb, var(--c1) 16%, transparent); color: var(--c1); }
+  .acc-item:nth-child(9n+2) .cat-icon { background: color-mix(in srgb, var(--c2) 16%, transparent); color: var(--c2); }
+  .acc-item:nth-child(9n+3) .cat-icon { background: color-mix(in srgb, var(--c3) 18%, transparent); color: var(--c3); }
+  .acc-item:nth-child(9n+4) .cat-icon { background: color-mix(in srgb, var(--c4) 16%, transparent); color: var(--c4); }
+  .acc-item:nth-child(9n+5) .cat-icon { background: color-mix(in srgb, var(--c5) 16%, transparent); color: var(--c5); }
+  .acc-item:nth-child(9n+6) .cat-icon { background: color-mix(in srgb, var(--c6) 16%, transparent); color: var(--c6); }
+  .acc-item:nth-child(9n+7) .cat-icon { background: color-mix(in srgb, var(--c1) 16%, transparent); color: var(--c1); }
+  .acc-item:nth-child(9n+8) .cat-icon { background: color-mix(in srgb, var(--c2) 16%, transparent); color: var(--c2); }
+  .acc-item:nth-child(9n+9) .cat-icon { background: color-mix(in srgb, var(--c5) 16%, transparent); color: var(--c5); }
   .acc-head .title { font-family: var(--display); font-weight:600; font-size:1rem; }
   .acc-head .count { font-family: var(--mono); font-size:.7rem; color: var(--text-soft); background: var(--bg-sunken); padding:.15rem .5rem; border-radius:1rem; margin-left:.4rem; }
   .acc-head .chev { width:1rem; height:1rem; transition: transform .3s ease; color: var(--text-soft); flex-shrink:0; }
@@ -158,13 +245,27 @@
   .acc-item.open .acc-panel { grid-template-rows: 1fr; }
   .acc-panel-inner { overflow:hidden; min-height:0; }
   .acc-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(230px,1fr)); gap:.75rem; padding: 0 1.15rem 1.15rem; }
-  .feat-chip { border:1px solid var(--line); border-radius:.5rem; padding:.8rem .9rem; background: var(--bg-sunken); }
+  .feat-chip { border:1px solid var(--line); border-radius:.5rem; padding:.8rem .9rem; background: var(--bg-sunken); transition: transform .2s ease, border-color .2s ease; }
+  .feat-chip:hover { transform: translateY(-2px); border-color: var(--accent); }
   .feat-chip .fc-name { font-size:.8125rem; font-weight:600; margin-bottom:.25rem; display:flex; align-items:center; gap:.4rem; }
   .feat-chip .fc-name::before { content:""; width:.4rem; height:.4rem; border-radius:50%; background: var(--accent); display:inline-block; flex-shrink:0; }
   .feat-chip .fc-desc { font-size:.75rem; color: var(--text-soft); line-height:1.45; }
 
   .spotlight-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap:1rem; }
-  .spotlight-card { background: var(--bg-elevated); border:1px solid var(--line); border-radius:.6rem; padding:1rem; }
+
+  .style-table { width:100%; border-collapse:collapse; font-size:.875rem; background: var(--bg-elevated); border-radius:.5rem; overflow:hidden; border:1px solid var(--line); }
+  .style-table th, .style-table td { text-align:left; padding:.65rem .75rem; border-bottom:1px solid var(--line); }
+  .style-table th { font-family: var(--mono); font-size:.75rem; text-transform:uppercase; letter-spacing:.04em; color: var(--text-soft); font-weight:500; background: var(--bg-sunken); }
+  .style-table tr:last-child td { border-bottom:none; }
+  .swatch { display:inline-block; width:.85rem; height:.85rem; border-radius:2px; margin-right:.5rem; vertical-align:-1px; }
+  .spotlight-card { background: var(--bg-elevated); border:1px solid var(--line); border-top:3px solid var(--accent); border-radius:.6rem; padding:1rem; transition: transform .25s ease, box-shadow .25s ease; }
+  .spotlight-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .spotlight-card:nth-child(6n+1) { border-top-color: var(--c1); }
+  .spotlight-card:nth-child(6n+2) { border-top-color: var(--c2); }
+  .spotlight-card:nth-child(6n+3) { border-top-color: var(--c3); }
+  .spotlight-card:nth-child(6n+4) { border-top-color: var(--c4); }
+  .spotlight-card:nth-child(6n+5) { border-top-color: var(--c5); }
+  .spotlight-card:nth-child(6n+6) { border-top-color: var(--c6); }
   .spotlight-card .sp-label { font-family: var(--mono); font-size:.7rem; color: var(--accent); text-transform:uppercase; letter-spacing:.05em; margin-bottom:.6rem; }
 
   .prompt-card { background: var(--bg-elevated); border:1px solid var(--line); border-radius:.6rem; overflow:hidden; margin-bottom:1.25rem; }
@@ -196,9 +297,14 @@
   .ai-grid { display:grid; grid-template-columns: 1.1fr .9fr; gap:1.5rem; align-items:start; }
   @media (max-width: 860px) { .ai-grid, .credit-top { grid-template-columns:1fr; } }
   .ai-tools { display:flex; flex-direction:column; gap:.75rem; }
-  .ai-tool { display:flex; gap:.75rem; align-items:flex-start; background: var(--bg-elevated); border:1px solid var(--line); border-radius:.5rem; padding:.9rem; }
-  .ai-tool .ico { width:2rem; height:2rem; border-radius:.4rem; background: var(--accent-soft); color: var(--accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .ai-tool { display:flex; gap:.75rem; align-items:flex-start; background: var(--bg-elevated); border:1px solid var(--line); border-radius:.5rem; padding:.9rem; transition: transform .2s ease, box-shadow .2s ease; }
+  .ai-tool:hover { transform: translateX(3px); box-shadow: var(--shadow); }
+  .ai-tool .ico { width:2rem; height:2rem; border-radius:.4rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
   .ai-tool .ico svg { width:1rem; height:1rem; }
+  .ai-tool:nth-child(4n+1) .ico { background: color-mix(in srgb, var(--c1) 16%, transparent); color: var(--c1); }
+  .ai-tool:nth-child(4n+2) .ico { background: color-mix(in srgb, var(--c2) 16%, transparent); color: var(--c2); }
+  .ai-tool:nth-child(4n+3) .ico { background: color-mix(in srgb, var(--c3) 18%, transparent); color: var(--c3); }
+  .ai-tool:nth-child(4n+4) .ico { background: color-mix(in srgb, var(--c5) 16%, transparent); color: var(--c5); }
   .ai-tool h5 { margin:0 0 .2rem; font-size:.85rem; }
   .ai-tool p { margin:0; font-size:.75rem; color: var(--text-soft); line-height:1.5; }
 
@@ -213,8 +319,11 @@
   .credit-main .links a:hover { border-color: var(--accent); color: var(--accent); }
   .credit-main .links svg { width:.85rem; height:.85rem; }
   .credit-side { display:flex; flex-direction:column; gap:1rem; }
-  .credit-mini { background: var(--bg-elevated); border:1px solid var(--line); border-radius:.6rem; padding:1rem; display:flex; gap:.75rem; align-items:flex-start; flex:1; }
-  .credit-mini .ico { width:2.4rem; height:2.4rem; border-radius:.5rem; background: var(--accent-soft); color: var(--accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .credit-mini { background: var(--bg-elevated); border:1px solid var(--line); border-radius:.6rem; padding:1rem; display:flex; gap:.75rem; align-items:flex-start; flex:1; transition: transform .2s ease; }
+  .credit-mini:hover { transform: translateY(-3px); }
+  .credit-mini .ico { width:2.4rem; height:2.4rem; border-radius:.5rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .credit-mini:nth-child(1) .ico { background: color-mix(in srgb, var(--c4) 16%, transparent); color: var(--c4); }
+  .credit-mini:nth-child(2) .ico { background: color-mix(in srgb, var(--c5) 16%, transparent); color: var(--c5); }
   .credit-mini .ico svg { width:1.2rem; height:1.2rem; }
   .credit-mini .who { font-weight:700; font-size:.85rem; margin-bottom:.15rem; }
   .credit-mini .what { font-size:.75rem; color: var(--text-soft); line-height:1.5; }
@@ -230,13 +339,15 @@
 </head>
 <body>
 
+<div id="scroll-progress"></div>
 <nav class="site-nav">
   <div class="wrap">
-    <a class="brand" href="#top"><span class="dot"></span> apex-vita-ui.skill</a>
-    <nav>
+    <a class="brand" href="#top"><span class="dot"></span> Oracle APEX UT skill</a>
+    <nav class="desktop-links">
       <a href="#library">Components</a>
       <a href="#demo">Live demo</a>
       <a href="#prompts">Prompts</a>
+      <a href="#styles">Styles</a>
       <a href="#install">Install</a>
       <a href="#ai">Use in AI</a>
       <a href="#credits">Credits</a>
@@ -245,39 +356,132 @@
       <button class="icon-btn" id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
       </button>
-      <a class="btn-star" href="https://github.com/raju-bd/apex-vita-ui.skill" target="_blank" rel="noopener">★ Star</a>
+      <a class="btn-star" href="https://github.com/raju-bd/Oracle-apex-ut-UI.skill" target="_blank" rel="noopener">★ Star</a>
+      <button class="nav-burger" id="nav-burger" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-inner">
+      <nav>
+        <a href="#library">Components</a>
+        <a href="#demo">Live demo</a>
+        <a href="#prompts">Prompts</a>
+        <a href="#styles">Styles</a>
+        <a href="#install">Install</a>
+        <a href="#ai">Use in AI</a>
+        <a href="#credits">Credits</a>
+      </nav>
     </div>
   </div>
 </nav>
 
 <header class="hero" id="top">
+  <div class="blob-field" aria-hidden="true">
+    <div class="blob blob-a"></div>
+    <div class="blob blob-b"></div>
+    <div class="blob blob-c"></div>
+    <div class="blob blob-d"></div>
+  </div>
   <div class="wrap">
-    <span class="eyebrow anim-1">Oracle APEX · Universal Theme 42 · Vita</span>
-    <h1 class="anim-2">Give any AI the actual <em>design tokens</em>, not a guess at what APEX looks like.</h1>
-    <p class="lede anim-3">A distilled, browser-ready reference for Oracle APEX's Vita design system — 300+ resolved
-      CSS custom properties, 45 real component types, and a worked example of building a brand-new Theme Style
-      the way Oracle builds its own. Drop it into any AI's context and get markup that's actually consistent
-      with a real APEX page.</p>
-    <div class="hero-ctas anim-4">
-      <a class="btn-primary" href="https://github.com/raju-bd/apex-vita-ui.skill" target="_blank" rel="noopener">Get the skill on GitHub →</a>
-      <a class="btn-secondary" href="#library">Browse components ↓</a>
-    </div>
-    <div class="clone-box anim-4">
-      <span>git clone https://github.com/raju-bd/apex-vita-ui.skill.git</span>
-      <button data-copy="git clone https://github.com/raju-bd/apex-vita-ui.skill.git">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        Copy
-      </button>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow anim-1">Oracle APEX · Universal Theme 42 · Vita</span>
+        <h1 class="anim-2">Give any AI the actual <em>design tokens</em>, not a guess at what APEX looks like.</h1>
+        <p class="lede anim-3">A distilled, browser-ready reference for Oracle APEX's Vita design system — 300+ resolved
+          CSS custom properties, 45 real component types, and a worked example of building a brand-new Theme Style
+          the way Oracle builds its own. Drop it into any AI's context and get markup that's actually consistent
+          with a real APEX page.</p>
+        <div class="hero-ctas anim-4">
+          <a class="btn-primary" href="https://github.com/raju-bd/Oracle-apex-ut-UI.skill" target="_blank" rel="noopener">Get the skill on GitHub →</a>
+          <a class="btn-secondary" href="#library">Browse components ↓</a>
+        </div>
+        <div class="clone-box anim-4">
+          <span>git clone https://github.com/raju-bd/Oracle-apex-ut-UI.skill.git</span>
+          <button data-copy="git clone https://github.com/raju-bd/Oracle-apex-ut-UI.skill.git">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-visual anim-5" aria-hidden="true">
+        <svg viewBox="0 0 440 440" xmlns="http://www.w3.org/2000/svg">
+          <circle class="orbit-ring" cx="220" cy="220" r="188" fill="none" stroke-width="1.2" stroke-dasharray="2 11"/>
+          <circle class="orbit-ring orbit-ring--rev" cx="220" cy="220" r="150" fill="none" stroke-width="1" stroke-dasharray="1 8"/>
+
+          <path class="connector" d="M115,87 L300,45" fill="none" stroke-width="1.5" stroke-dasharray="6 6"/>
+          <path class="connector" d="M300,45 L315,177" fill="none" stroke-width="1.5" stroke-dasharray="6 6"/>
+          <path class="connector" d="M115,87 L120,203" fill="none" stroke-width="1.5" stroke-dasharray="6 6"/>
+          <path class="connector" d="M120,203 L315,177" fill="none" stroke-width="1.5" stroke-dasharray="6 6"/>
+          <path class="connector" d="M120,203 L200,305" fill="none" stroke-width="1.5" stroke-dasharray="6 6"/>
+          <path class="connector" d="M315,177 L335,285" fill="none" stroke-width="1.5" stroke-dasharray="6 6"/>
+          <path class="connector" d="M200,305 L335,285" fill="none" stroke-width="1.5" stroke-dasharray="6 6"/>
+
+          <g class="chip chip-1">
+            <rect x="40" y="60" width="150" height="54" rx="11" fill="var(--c1)" fill-opacity=".14" stroke="var(--c1)" stroke-width="1.4"/>
+            <rect x="54" y="74" width="12" height="12" rx="3" fill="var(--c1)"/>
+            <text x="74" y="84" font-family="JetBrains Mono, monospace" font-size="10" fill="var(--c1)">primary</text>
+            <text x="74" y="98" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--text-soft)">#0E9F6E</text>
+          </g>
+
+          <g class="chip chip-2">
+            <rect x="230" y="18" width="140" height="50" rx="11" fill="var(--c2)" fill-opacity=".14" stroke="var(--c2)" stroke-width="1.4"/>
+            <text x="244" y="38" font-family="JetBrains Mono, monospace" font-size="10" fill="var(--c2)">--ut-header-bg</text>
+            <text x="244" y="54" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--text-soft)">3rem height</text>
+          </g>
+
+          <g class="chip chip-3">
+            <rect x="55" y="178" width="130" height="50" rx="11" fill="var(--c5)" fill-opacity=".14" stroke="var(--c5)" stroke-width="1.4"/>
+            <text x="69" y="198" font-family="JetBrains Mono, monospace" font-size="10" fill="var(--c5)">radius</text>
+            <text x="69" y="214" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--text-soft)">.375rem</text>
+          </g>
+
+          <g class="chip chip-4">
+            <rect x="242" y="150" width="148" height="54" rx="11" fill="var(--c3)" fill-opacity=".16" stroke="var(--c3)" stroke-width="1.4"/>
+            <rect x="256" y="164" width="12" height="12" rx="3" fill="var(--c3)"/>
+            <text x="276" y="174" font-family="JetBrains Mono, monospace" font-size="10" fill="var(--c3)">focus-ring</text>
+            <text x="276" y="188" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--text-soft)">#0E9F6E</text>
+          </g>
+
+          <g class="chip chip-5">
+            <rect x="120" y="280" width="158" height="50" rx="11" fill="var(--c4)" fill-opacity=".14" stroke="var(--c4)" stroke-width="1.4"/>
+            <text x="134" y="300" font-family="JetBrains Mono, monospace" font-size="10" fill="var(--c4)">shadow-md</text>
+            <text x="134" y="316" font-family="JetBrains Mono, monospace" font-size="9" fill="var(--text-soft)">0 .75rem 1.5rem</text>
+          </g>
+
+          <g class="chip chip-6">
+            <rect x="280" y="258" width="110" height="48" rx="11" fill="var(--c6)" fill-opacity=".16" stroke="var(--c6)" stroke-width="1.4"/>
+            <rect x="294" y="271" width="12" height="12" rx="3" fill="var(--c6)"/>
+            <text x="314" y="281" font-family="JetBrains Mono, monospace" font-size="10" fill="var(--c6)">badge</text>
+          </g>
+
+          <circle class="dot" cx="115" cy="87" r="4" fill="var(--c1)"/>
+          <circle class="dot" cx="300" cy="45" r="4" fill="var(--c2)"/>
+          <circle class="dot" cx="120" cy="203" r="4" fill="var(--c5)"/>
+          <circle class="dot" cx="315" cy="177" r="4" fill="var(--c3)"/>
+          <circle class="dot" cx="200" cy="305" r="4" fill="var(--c4)"/>
+          <circle class="dot" cx="335" cy="285" r="4" fill="var(--c6)"/>
+        </svg>
+      </div>
     </div>
 
     <div class="demo-shell anim-5" id="demo">
       <div class="demo-toolbar">
         <span class="label">tokens/*.css — live, unmodified from the repo</span>
         <div class="style-switch">
-          <button data-style="vita-light">Vita</button>
-          <button data-style="vita-dark">Vita Dark</button>
-          <button data-style="vita-red">Vita Red</button>
-          <button data-style="vita-emerald" class="active">Vita Emerald</button>
+          <label for="style-select" style="font-size:.75rem; color:#545F58;">Theme Style:</label>
+          <select id="style-select">
+            <option value="vita-light">Vita</option>
+            <option value="vita-dark">Vita Dark</option>
+            <option value="vita-red">Vita Red</option>
+            <option value="vita-slate">Vita Slate</option>
+            <option value="iris">Iris</option>
+            <option value="redwood">Redwood</option>
+            <option value="standard">Standard (legacy)</option>
+            <option value="vita-emerald" selected>Vita Emerald (new style)</option>
+          </select>
         </div>
       </div>
       <div class="app-header"><span>Elite Paint ERP</span><span>Dashboard</span></div>
@@ -398,6 +602,29 @@
   </div>
 </section>
 
+<section id="styles" class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Included Theme Styles</span>
+      <h2>Eight styles, one token system</h2>
+      <p>Pick a style in the live demo above, or swap the <code class="inline">:root</code> stylesheet in your own project — the exact same markup re-skins across all eight, no HTML changes required.</p>
+    </div>
+    <table class="style-table">
+      <thead><tr><th>Style</th><th>Accent</th><th>Nav</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><span class="swatch" style="background:#056AC8"></span>Vita</td><td>#056AC8</td><td>Dark</td><td>Oracle default</td></tr>
+        <tr><td><span class="swatch" style="background:#056AC8"></span>Vita Dark</td><td>#056AC8</td><td>Dark</td><td>Oracle official dark mode</td></tr>
+        <tr><td><span class="swatch" style="background:#DA1B1B"></span>Vita Red</td><td>#DA1B1B</td><td>Light</td><td>Oracle official variant</td></tr>
+        <tr><td><span class="swatch" style="background:#505F6D"></span>Vita Slate</td><td>#505F6D</td><td>Dark</td><td>Oracle official variant, muted blue-gray</td></tr>
+        <tr><td><span class="swatch" style="background:#00688C"></span>Iris</td><td>#00688C</td><td>Dark</td><td>Redwood-family "Sky" pillar, dark neutral header</td></tr>
+        <tr><td><span class="swatch" style="background:#5F7D4F"></span>Redwood</td><td>#5F7D4F</td><td>Light</td><td>Oracle's flagship design system, warm neutrals</td></tr>
+        <tr><td><span class="swatch" style="background:#2178B4"></span>Standard</td><td>#2178B4</td><td>Dark</td><td>Legacy pre-Theme-42 approximation, not pixel-exact</td></tr>
+        <tr><td><span class="swatch" style="background:#0E9F6E"></span><strong>Vita Emerald</strong></td><td>#0E9F6E</td><td>Dark</td><td>New — built for this repo, softer 6px radii</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
 <section id="install" class="reveal">
   <div class="wrap">
     <div class="section-head">
@@ -410,7 +637,7 @@
         <div>
           <h4>Clone or download the repo</h4>
           <p>Grab the whole skill package — no dependencies, no build step.</p>
-          <div class="snippet"><div class="code-block" data-code-inline="git clone https://github.com/raju-bd/apex-vita-ui.skill.git"></div></div>
+          <div class="snippet"><div class="code-block" data-code-inline="git clone https://github.com/raju-bd/Oracle-apex-ut-UI.skill.git"></div></div>
         </div>
       </div>
       <div class="install-step">
@@ -441,7 +668,7 @@
       <p>Paste <code class="inline">SKILL.md</code> and <code class="inline">components-reference.md</code> in as context, then ask normally.</p>
     </div>
     <div class="ai-grid">
-      <div class="code-block" data-code-inline="Using the Vita Emerald design tokens from apex-vita-ui.skill,
+      <div class="code-block" data-code-inline="Using the Vita Emerald design tokens from Oracle-apex-ut-UI.skill,
 build an HTML customer dashboard: a header, a left nav, three
 stat cards, an alert, and a report table. Use var(--token-name)
 for every color/spacing value — no hardcoded hex."></div>
@@ -475,7 +702,7 @@ for every color/spacing value — no hardcoded hex."></div>
     </div>
     <div class="credit-top">
       <div class="credit-main">
-        <img class="avatar-lg" alt="Md. Mahfuzul Amin (Raju)" src="images/14306684.jpg" width='96' height='96'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%230E9F6E'/%3E%3Cstop offset='100%25' stop-color='%230C7F5A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='96' height='96' rx='48' fill='url(%23g)'/%3E%3Ctext x='50%25' y='54%25' font-family='Space Grotesk, sans-serif' font-size='34' font-weight='700' fill='white' text-anchor='middle' dominant-baseline='middle'%3EMA%3C/text%3E%3C/svg%3E">
+        <img class="avatar-lg" alt="Md. Mahfuzul Amin (Raju)" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%230E9F6E'/%3E%3Cstop offset='100%25' stop-color='%230C7F5A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='96' height='96' rx='48' fill='url(%23g)'/%3E%3Ctext x='50%25' y='54%25' font-family='Space Grotesk, sans-serif' font-size='34' font-weight='700' fill='white' text-anchor='middle' dominant-baseline='middle'%3EMA%3C/text%3E%3C/svg%3E">
         <div>
           <div class="who">Md. Mahfuzul Amin (Raju)</div>
           <div class="role">IT Manager &amp; Oracle APEX Developer, OCP — built and maintains this repo</div>
@@ -504,7 +731,7 @@ for every color/spacing value — no hardcoded hex."></div>
 <footer class="bottom-bar">
   <div class="wrap" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
     <span>MIT licensed. Oracle APEX remains Oracle's property — see LICENSE.</span>
-    <a href="https://github.com/raju-bd/apex-vita-ui.skill" target="_blank" rel="noopener">github.com/raju-bd/apex-vita-ui.skill ★</a>
+    <a href="https://github.com/raju-bd/Oracle-apex-ut-UI.skill" target="_blank" rel="noopener">github.com/raju-bd/Oracle-apex-ut-UI.skill ★</a>
   </div>
 </footer>
 
@@ -523,15 +750,11 @@ for every color/spacing value — no hardcoded hex."></div>
 })();
 
 (function () {
-  var buttons = document.querySelectorAll('.style-switch button');
+  var select = document.getElementById('style-select');
   var delta = document.getElementById('delta-css');
-  buttons.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      buttons.forEach(function (b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      var v = btn.dataset.style;
-      delta.href = v === 'vita-light' ? '' : 'tokens/' + v + '.css';
-    });
+  select.addEventListener('change', function () {
+    var v = select.value;
+    delta.href = v === 'vita-light' ? '' : 'tokens/' + v + '.css';
   });
 })();
 
@@ -549,6 +772,28 @@ document.addEventListener('click', function (e) {
     entries.forEach(function (en) { if (en.isIntersecting) en.target.classList.add('in-view'); });
   }, { threshold: .12 });
   document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+})();
+
+/* ---------------- scroll progress bar ---------------- */
+(function () {
+  var bar = document.getElementById('scroll-progress');
+  function update() {
+    var h = document.documentElement;
+    var scrolled = (h.scrollTop) / ((h.scrollHeight - h.clientHeight) || 1) * 100;
+    bar.style.width = scrolled + '%';
+  }
+  document.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+/* ---------------- mobile burger menu ---------------- */
+(function () {
+  var burger = document.getElementById('nav-burger');
+  var menu = document.getElementById('mobile-menu');
+  burger.addEventListener('click', function () { menu.classList.toggle('open'); });
+  menu.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { menu.classList.remove('open'); });
+  });
 })();
 
 function renderCodeBlock(container, code) {

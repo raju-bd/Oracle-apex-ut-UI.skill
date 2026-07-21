@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Oracle-apex-ut-UI.skill — single-file bundle demo</title>
+<!-- This is the ONLY file this page depends on besides this HTML itself. -->
+<script src="Oracle-apex-ut-UI.skill.bundle.js"></script>
+<style>
+  body { margin:0; font-family: -apple-system, sans-serif; background: var(--ut-body-background-color); color: var(--ut-body-text-color); }
+  header { height: var(--ut-header-height); background: var(--ut-header-background-color); color: var(--ut-header-text-color); display:flex; align-items:center; justify-content:space-between; padding:0 1rem; }
+  main { padding: 1.5rem; max-width: 700px; margin:0 auto; }
+  select { font-size:.875rem; padding:.4rem .6rem; }
+  .t-Region { background: var(--ut-region-background-color); border:1px solid var(--ut-region-border-color); border-radius: var(--ut-region-border-radius); box-shadow: var(--ut-region-box-shadow); margin-top:1rem; }
+  .t-Region-header { background: var(--ut-region-header-background-color); padding:.75rem 1rem; font-weight:600; }
+  .t-Region-body { padding: 1rem; }
+  .t-Button { background: var(--a-button-background-color); color: var(--a-button-text-color); border:1px solid var(--a-button-border-color); border-radius: var(--a-button-border-radius); padding:.5rem .9rem; cursor:pointer; }
+  .t-Button--hot { background: var(--ut-palette-primary); color: var(--ut-palette-primary-contrast); border-color:transparent; }
+</style>
+</head>
+<body>
+  <header>
+    <strong>Single-file bundle demo</strong>
+    <select id="style-picker"></select>
+  </header>
+  <main>
+    <p>This entire page — including every color, radius, and shadow below — comes from
+       one file: <code>Oracle-apex-ut-UI.skill.bundle.js</code>. No <code>tokens/</code>
+       folder, no separate CSS <code>&lt;link&gt;</code> tags.</p>
+    <div class="t-Region">
+      <div class="t-Region-header">Example Region</div>
+      <div class="t-Region-body">
+        Styled entirely by <code>var(--token-name)</code>.
+        <br><br>
+        <button class="t-Button t-Button--hot">Hot button</button>
+        <button class="t-Button">Default button</button>
+      </div>
+    </div>
+  </main>
+  <script>
+    var picker = document.getElementById('style-picker');
+    ApexVitaSkill.list().forEach(function (name) {
+      var opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      picker.appendChild(opt);
+    });
+    picker.value = 'vita-emerald';
+    ApexVitaSkill.use('vita-emerald');
+    picker.addEventListener('change', function () {
+      ApexVitaSkill.use(picker.value);
+    });
+  </script>
+</body>
+</html>
