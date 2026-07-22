@@ -54,7 +54,7 @@ Oracle-apex-ut-UI.skill/
 ├── Oracle-apex-ut-UI.skill.md       ← single-file bundle for AI use (everything inlined)
 ├── Oracle-apex-ut-UI.skill.bundle.js← single-file bundle for the browser (everything inlined)
 ├── bundle-demo.html            ← proof the .bundle.js file works completely standalone
-├── SKILL.md                    ← the skill itself — usage guide + token map + workflow
+├── SKILL.md                    ← the skill itself — YAML frontmatter (name/description/license) + usage guide + token map + workflow
 ├── components-reference.md     ← real APEX class names + markup patterns
 ├── example.html                ← minimal dashboard demo with a live style switcher
 ├── tokens/                     ← the skill's source-of-truth tokens

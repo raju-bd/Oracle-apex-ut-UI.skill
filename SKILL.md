@@ -1,3 +1,9 @@
+---
+name: oracle-apex-ut-ui
+description: "Use this skill whenever the user wants to generate, style, or reference HTML/CSS that matches Oracle APEX's Universal Theme 42 design system (Vita, Vita Dark, Vita Red, Vita Slate, Iris, Redwood, or Standard Theme Styles). Triggers include: any mention of 'Oracle APEX', 'APEX theme', 'Universal Theme', 'Vita', 'Vita Emerald', 'Theme Roller', 'APEX region/component' (Alert, Card, Interactive Report, Wizard, etc.), or requests to build a dashboard, admin UI, or component that should 'look like APEX' or use APEX design tokens. Also use when asked to create a new custom APEX Theme Style, when styling should use var(--ut-*) / var(--a-*) CSS custom properties instead of hardcoded colors, or when working with files under tokens/ (vita-light.css, vita-dark.css, vita-red.css, vita-slate.css, iris.css, redwood.css, standard.css, vita-emerald.css/.less) or components-reference.md from this package. Do NOT use for generic web design requests with no APEX/Universal Theme context."
+license: MIT — see LICENSE in this repository. Oracle APEX and Universal Theme 42 remain Oracle's property; token values here are an independent, hand-derived reference.
+---
+
 # Oracle APEX Universal Theme skill
 
 *(Package / repo slug: `Oracle-apex-ut-UI.skill`)*
